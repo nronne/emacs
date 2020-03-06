@@ -1,2 +1,6 @@
-Emacs setup
-*Indendt
+EMACS SETUP
+* Basics
+
+* Python
+
+* C#
