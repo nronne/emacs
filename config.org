@@ -51,7 +51,7 @@
 #+END_SRC
 
 
-* Packages
+* Installed packages
 ** try
 #+BEGIN_SRC emacs-lisp
   (use-package try
@@ -81,14 +81,15 @@
   (ido-mode 1)
 #+END_SRC
 
-** counsel
-#+BEGIN_SRC emacs-lisp
-  (use-package counsel
-    :ensure t
-    )
-#+END_SRC
+** undo-tree
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :ensure t
+       :init
+       (global-undo-tree-mode))
+   #+END_SRC
 
-** swiper/ivy/counsel
+** counsel
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
     :ensure t
@@ -97,6 +98,10 @@
      :map ivy-minibuffer-map
      ("M-y" . ivy-next-line)))
 
+#+END_SRC
+
+** swiper/ivy
+#+BEGIN_SRC emacs-lisp
   (use-package ivy
     :ensure t
     :diminish (ivy-mode)
@@ -134,4 +139,5 @@
       (global-auto-complete-mode t)
       ))
 #+END_SRC
+
 
