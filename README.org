@@ -1,8 +1,8 @@
 * EMACS SETUP
 Testet on GNU EMACS 26.3  
 
-* Configured packages for general editing
-** General
+* General editing
+** Packages
    - try 
    - which-key
    - org-mode
@@ -16,9 +16,9 @@ Testet on GNU EMACS 26.3
 ** Theme
    Leuven
 
-* TODO Python
+* TODO Python-mode
    Coming soon.
-* TODO C#
+* TODO C#-mode
    Coming soon.
 
 -------------------------------
