@@ -16,7 +16,7 @@ Testet on GNU EMACS 26.3
    - expand-region ::
      Mapped to M-SPC
    - iedit, narrow-or-widen-dwim ::
-     iedit-mode mapped to C-x c (as in change)
+     iedit-mode mapped to C-x c (as in change) \\
      narrow/widen mapped to C-x n (as in narrow)
  
 ** Theme
