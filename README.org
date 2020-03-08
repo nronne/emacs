@@ -3,22 +3,22 @@ Testet on GNU EMACS 26.3
 
 * General editing
 ** Packages
-   - try 
-   - which-key
-   - expand-region
-   - org-mode
-   - ido
-   - counsel
-   - swipter
-   - ivy
-   - auto-complete
-   - undo-tree
-   - expand-region
+   - try ::
+   - which-key ::
+   - expand-region ::
+   - org-mode ::
+   - ido ::
+   - counsel ::
+   - swipter ::
+   - ivy ::
+   - auto-complete ::
+   - undo-tree ::
+   - expand-region ::
      Mapped to M-SPC
-   - iedit, narrow-or-widen-dwim
-     iedit mode mapped to C-x c (as in change)
+   - iedit, narrow-or-widen-dwim ::
+     iedit-mode mapped to C-x c (as in change)
      narrow/widen mapped to C-x n (as in narrow)
-
+ 
 ** Theme
    Leuven
 
