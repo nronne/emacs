@@ -1,7 +1,7 @@
 * EMACS SETUP
 Testet on GNU EMACS 26.3  
 
-* Configured packages
+* Configured packages for general editing
 ** General
    - try 
    - which-key
@@ -11,10 +11,14 @@ Testet on GNU EMACS 26.3
    - swipter
    - ivy
    - auto-complete
+   - undo-tree
 
-** Python
+** Theme
+   Leuven
+
+* TODO Python
    Coming soon.
-** C#
+* TODO C#
    Coming soon.
 
 
