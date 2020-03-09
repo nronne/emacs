@@ -125,10 +125,15 @@
    #+END_SRC
 ** org mode
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  ;; Make windmove work in Org mode:
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
 #+END_SRC
 
 ** ido
