@@ -27,6 +27,10 @@ Testet on GNU EMACS 26.3
    - autopair ::
 		 With csharp-mode {} 
 
+* Git
+  Magit configured \\
+  C-x g used to enter magit-status
+
 * TODO Python-mode
    Coming soon.
 * TODO C#-mode
