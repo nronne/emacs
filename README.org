@@ -1,7 +1,13 @@
 * EMACS SETUP
 Testet on GNU EMACS 26.3  
+----------------------------
 
 * General editing
+** Custom key-bindings
+   Setup for MacOS.
+** Theme
+   Leuven
+
 ** Packages
    - try ::
    - which-key ::
@@ -19,13 +25,12 @@ Testet on GNU EMACS 26.3
      iedit-mode mapped to C-x c (as in change) \\
      narrow/widen mapped to C-x n (as in narrow)
  
-** Theme
-   Leuven
 
 * TODO Python-mode
    Coming soon.
 * TODO C#-mode
-   Coming soon.
+  Simple color-coding is configured. \\ 
+  LSP is coming.
 
 -------------------------------
 Copyright (C) 2020 Nikolaj Rønne
