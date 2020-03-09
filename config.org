@@ -1,6 +1,21 @@
 #+STARTUP: overview
 
 * General Setup
+** Remap for MacOS
+   #+BEGIN_SRC emacs-lisp
+;; With same remap in iterm2 and right-command-key set up to be control with Karabiner-elements.
+     (if (string-equal system-type "darwin")
+	  (dolist (key '("\M-8" "\M-9" "\M-/"))
+	    (global-unset-key key))
+
+	  (global-set-key (kbd "M-(") (lambda () (interactive) (insert "{")))
+	  (global-set-key (kbd "M-)") (lambda () (interactive) (insert "}")))
+	  (global-set-key (kbd "M-8") (lambda () (interactive) (insert "[")))
+	  (global-set-key (kbd "M-9") (lambda () (interactive) (insert "]")))
+	  (global-set-key (kbd "M-/") (lambda () (interactive) (insert "\\")))
+	  (global-set-key (kbd "M-'") (lambda () (interactive) (insert "@")))
+	  (setq mac-right-command-modifier 'control))
+   #+END_SRC
 ** Interface
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
@@ -192,3 +207,16 @@
 * Python-mode
 
 * Csharp-mode
+** csharp-mode
+   #+BEGIN_SRC emacs-lisp
+     (defun my-csharp-mode-hook ()
+       (electric-pair-local-mode 1)
+       )
+
+     (use-package csharp-mode
+     :ensure t
+       :init
+       (add-hook 'csharp-mode-hook 'my-csharp-mode-hook)
+       :config
+       (with-eval-after-load 'csharp-mode))
+   #+END_SRC
