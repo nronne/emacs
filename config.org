@@ -219,6 +219,7 @@
       (progn
 	(bind-key "C-x g" 'magit-status)
 	))
+    (setq auto-revert-check-vc-info t)
   #+END_SRC
 
 * Python-mode
