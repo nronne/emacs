@@ -4,26 +4,27 @@
 ** Remap for MacOS
    #+BEGIN_SRC emacs-lisp
 ;; With same remap in iterm2 and right-command-key set up to be control with Karabiner-elements.
-     (if (string-equal system-type "darwin")
+;     (if (eq system-type 'darwin)
 	  (dolist (key '("\M-8" "\M-9" "\M-/" "\M-(" "\M-)"))
 	    (global-unset-key key))
-
 	  (global-set-key (kbd "M-(") (lambda () (interactive) (insert "{")))
 	  (global-set-key (kbd "M-)") (lambda () (interactive) (insert "}")))
 	  (global-set-key (kbd "M-8") (lambda () (interactive) (insert "[")))
 	  (global-set-key (kbd "M-9") (lambda () (interactive) (insert "]")))
 	  (global-set-key (kbd "M-/") (lambda () (interactive) (insert "\\")))
-	  (global-set-key (kbd "M-'") (lambda () (interactive) (insert "@")))
-	  (setq mac-right-command-modifier 'control))
+	  (global-set-key (kbd "M-'") (lambda () (interactive) (insert "@")));)
    #+END_SRC
 ** Interface
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
+  (scroll-bar-mode -1)
   (save-place-mode 1)
+  (show-paren-mode 1)
   (column-number-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
+  (setq ring-bell-function 'ignore)
 #+END_SRC
 
 ** Buffer
@@ -58,6 +59,10 @@
 * Theme
 #+BEGIN_SRC emacs-lisp
   (load-theme 'leuven)
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1))
+  (use-package all-the-icons)
 #+END_SRC
 
 
@@ -228,7 +233,7 @@
   #+END_SRC
 
 * Python-mode
-Comming now
+
 
 * Csharp-mode
 ** csharp-mode

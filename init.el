@@ -2,6 +2,11 @@
 ;; MY SETUP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Server setup
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 ;; Package management: MELPA and use-package
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -23,7 +28,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (autopair expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))))
+    (doom-modeline autopair expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
