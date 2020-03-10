@@ -3,16 +3,17 @@
 * General Setup
 ** Remap for MacOS
    #+BEGIN_SRC emacs-lisp
-;; With same remap in iterm2 and right-command-key set up to be control with Karabiner-elements.
-;     (if (eq system-type 'darwin)
-	  (dolist (key '("\M-8" "\M-9" "\M-/" "\M-(" "\M-)"))
-	    (global-unset-key key))
-	  (global-set-key (kbd "M-(") (lambda () (interactive) (insert "{")))
-	  (global-set-key (kbd "M-)") (lambda () (interactive) (insert "}")))
-	  (global-set-key (kbd "M-8") (lambda () (interactive) (insert "[")))
-	  (global-set-key (kbd "M-9") (lambda () (interactive) (insert "]")))
-	  (global-set-key (kbd "M-/") (lambda () (interactive) (insert "\\")))
-	  (global-set-key (kbd "M-'") (lambda () (interactive) (insert "@")));)
+     ;; With same remap in iterm2 and right-command-key set up to be control with Karabiner-elements.
+     ;     (if (eq system-type 'darwin)
+     (dolist (key '("\M-8" "\M-9" "\M-/" "\M-(" "\M-)" "\M-i"))
+       (global-unset-key key))
+     (global-set-key (kbd "M-(") "{")
+     (global-set-key (kbd "M-)") "}")
+     (global-set-key (kbd "M-8") "[")
+     (global-set-key (kbd "M-9") "]")
+     (global-set-key (kbd "M-/") "\\")
+     (global-set-key (kbd "M-'") "@")
+     (global-set-key (kbd "M-i") "|");)
    #+END_SRC
 ** Interface
 #+BEGIN_SRC emacs-lisp
@@ -23,6 +24,7 @@
   (save-place-mode 1)
   (show-paren-mode 1)
   (column-number-mode 1)
+  (display-line-numbers-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (setq ring-bell-function 'ignore)
 #+END_SRC
@@ -213,11 +215,6 @@
        :ensure t
        :init
        (autopair-global-mode))
-
-     (add-hook 'csharp-mode-hook
-	       #'(lambda ()
-		   (push '(?{ . ?})
-			 (getf autopair-extra-pairs :code))))
    #+END_SRC
 
 
@@ -231,7 +228,8 @@
 	))
     (setq auto-revert-check-vc-info t)
   #+END_SRC
-
+  
+  
 * Python-mode
 
 
@@ -239,12 +237,12 @@
 ** csharp-mode
    #+BEGIN_SRC emacs-lisp
      (defun my-csharp-mode-hook ()
-       )
+	 )
 
      (use-package csharp-mode
-     :ensure t
-       :init
-       (add-hook 'csharp-mode-hook 'my-csharp-mode-hook)
+       :ensure t
        :config
        (with-eval-after-load 'csharp-mode))
    #+END_SRC
+
+
