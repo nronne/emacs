@@ -15,6 +15,7 @@
      (global-set-key (kbd "M-'") "@")
      (global-set-key (kbd "M-i") "|");)
    #+END_SRC
+
 ** Interface
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
@@ -90,6 +91,7 @@
        :config
        (global-set-key (kbd "M-SPC") 'er/expand-region))
    #+END_SRC
+
 ** iedit, narrow-or-widen-dwim
    #+BEGIN_SRC emacs-lisp
      ; mark and edit all copies of the marked region simultaniously. 
@@ -130,6 +132,7 @@
      (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
 
    #+END_SRC
+
 ** org mode
 #+BEGIN_SRC emacs-lisp
     (use-package org-bullets
@@ -197,6 +200,35 @@
       (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
       ))
 #+END_SRC
+
+** ibuffer
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-x C-b") 'ibuffer)
+     (setq ibuffer-saved-filter-groups
+	   (quote (("default"
+		    ("dired" (mode . dired-mode))
+		    ("org" (name . "^.*org$"))
+		    ("magit" (mode . magit-mode))
+		    ("web" (or (mode . web-mode) (mode . js2-mode)))
+		    ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+		    ("programming" (or
+				    (mode . python-mode)
+				    (mode . c-mode)
+				    (mode . csharp-mode)))
+		    ("emacs" (or
+			      (name . "^\\*scratch\\*$")
+			      (name . "^\\*Messages\\*$")))))))
+     (add-hook 'ibuffer-mode-hook
+	       (lambda ()
+		 (ibuffer-auto-mode 1)
+		 (ibuffer-switch-to-saved-filter-groups "default")))
+
+     ;; don't show these
+     ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+
+     ;; Don't show filter groups if there are no buffers in that group
+     (setq ibuffer-show-empty-filter-groups nil)
+   #+END_SRC
 
 ** auto-complete
 #+BEGIN_SRC emacs-lisp
