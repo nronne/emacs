@@ -1,6 +1,15 @@
-* EMACS SETUP
+#+TITLE: Emacs configuration
+#+AUTHOR:    Nikolaj Rønne
+#+EMAIL:     
+#+DESCRIPTION: My personal emacs setup
+#+LANGUAGE:  en
+
 Testet on GNU EMACS 26.3  
 ----------------------------
+Clone repository as 
+#+BEGIN_SRC shell
+git clone https://github.com/nronne/emacs
+#+END_SRC
 
 * General editing
 ** Custom key-bindings
