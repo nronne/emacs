@@ -1,5 +1,6 @@
 #+STARTUP: overview
 
+
 * General Setup
 ** Remap for MacOS
    #+BEGIN_SRC emacs-lisp
@@ -25,7 +26,7 @@
   (save-place-mode 1)
   (show-paren-mode 1)
   (column-number-mode 1)
-  (display-line-numbers-mode 1)
+  ;; (global-display-line-numbers-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (setq ring-bell-function 'ignore)
 #+END_SRC
@@ -58,14 +59,24 @@
     )
 #+END_SRC
 
-
 * Theme
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'leuven)
+    ;;  (load-theme 'leuven)
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/custom_themes/emacs-leuven-theme")
+    (load-theme 'leuven t)
+
+  ;; (use-package all-the-icons
+  ;;     :ensure t)
+
   (use-package doom-modeline
     :ensure t
-    :init (doom-modeline-mode 1))
-  (use-package all-the-icons)
+    :init 
+    (doom-modeline-mode 1)
+    (setq doom-modeline-buffer-encoding nil)
+    (setq doom-modeline-icon (display-graphic-p))
+    :config
+    (use-package all-the-icons
+      :ensure t))
 #+END_SRC
 
 
@@ -203,31 +214,36 @@
 
 ** ibuffer
    #+BEGIN_SRC emacs-lisp
-     (global-set-key (kbd "C-x C-b") 'ibuffer)
-     (setq ibuffer-saved-filter-groups
-	   (quote (("default"
-		    ("dired" (mode . dired-mode))
-		    ("org" (name . "^.*org$"))
-		    ("magit" (mode . magit-mode))
-		    ("web" (or (mode . web-mode) (mode . js2-mode)))
-		    ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
-		    ("programming" (or
-				    (mode . python-mode)
-				    (mode . c-mode)
-				    (mode . csharp-mode)))
-		    ("emacs" (or
-			      (name . "^\\*scratch\\*$")
-			      (name . "^\\*Messages\\*$")))))))
-     (add-hook 'ibuffer-mode-hook
-	       (lambda ()
-		 (ibuffer-auto-mode 1)
-		 (ibuffer-switch-to-saved-filter-groups "default")))
+	  (global-set-key (kbd "C-x C-b") 'ibuffer)
+	  (setq ibuffer-saved-filter-groups
+		(quote (("default"
+			 ("dired" (mode . dired-mode))
+			 ("org" (name . "^.*org$"))
+			 ("magit" (mode . magit-mode))
+			 ("web" (or (mode . web-mode) (mode . js2-mode)))
+			 ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+			 ("programming" (or
+					 (mode . python-mode)
+					 (mode . c-mode)
+					 (mode . csharp-mode)
+					 (mode . make-mode)))
+			 ("emacs" (or
+				   (name . "^\\*scratch\\*$")
+				   (name . "^\\*Messages\\*$")))))))
+	  (add-hook 'ibuffer-mode-hook
+		    (lambda ()
+		      (ibuffer-auto-mode 1)
+		      (ibuffer-switch-to-saved-filter-groups "default")))
 
-     ;; don't show these
-     ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+	  ;; don't show these
+	  ;(add-to-list 'ibuffer-never-show-predicates "zowie")
 
-     ;; Don't show filter groups if there are no buffers in that group
-     (setq ibuffer-show-empty-filter-groups nil)
+	  ;; Don't show filter groups if there are no buffers in that group
+	  (setq ibuffer-show-empty-filter-groups nil)
+
+	  (use-package all-the-icons-ibuffer
+	    :ensure t
+	    :init (all-the-icons-ibuffer-mode 1))
    #+END_SRC
 
 ** auto-complete
@@ -249,7 +265,6 @@
        (autopair-global-mode))
    #+END_SRC
 
-
 * Git
   #+BEGIN_SRC emacs-lisp
     (use-package magit
@@ -263,7 +278,6 @@
   
   
 * Python-mode
-
 
 * Csharp-mode
 ** csharp-mode
