@@ -221,39 +221,43 @@
 
 ** ibuffer
    #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (setq ibuffer-saved-filter-groups
-	   (quote (("default"
-		    ("dired" (mode . dired-mode))
-		    ("org" (name . "^.*org$"))
-		    ("git" (or 
-			      (mode . magit-mode)			      
-			      (mode . Magit)))
-		    ("web" (or (mode . web-mode) (mode . js2-mode)))
-		    ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
-		    ("programming" (or
-				    (mode . python-mode)
-				    (mode . c-mode)
-				    (mode . csharp-mode)
-				    (mode . make-mode)))
-		    ("emacs" (or
-			      (name . "^\\*scratch\\*$")
-			      (name . "^\\*Messages\\*$")))
-		    ))))
-  (add-hook 'ibuffer-mode-hook
-	       (lambda ()
-		 (ibuffer-auto-mode 1)
-		 (ibuffer-switch-to-saved-filter-groups "default")))
+     (global-set-key (kbd "C-x C-b") 'ibuffer)
+     (setq ibuffer-saved-filter-groups
+	      (quote (("default"
+		       ("dired" (mode . dired-mode))
+		       ("org" (name . "^.*org$"))
+		       ("git" (or 
+			       (mode . magit-blame-mode)
+			       (mode . magit-cherry-mode)
+			       (mode . magit-diff-mode)
+			       (mode . magit-log-mode)
+			       (mode . magit-process-mode)
+			       (mode . magit-status-mode)))
+		       ("web" (or (mode . web-mode) (mode . js2-mode)))
+		       ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+		       ("programming" (or
+				       (mode . python-mode)
+				       (mode . c-mode)
+				       (mode . csharp-mode)
+				       (mode . make-mode)))
+		       ("emacs" (or
+				 (name . "^\\*scratch\\*$")
+				 (name . "^\\*Messages\\*$")))
+		       ))))
+     (add-hook 'ibuffer-mode-hook
+		  (lambda ()
+		    (ibuffer-auto-mode 1)
+		    (ibuffer-switch-to-saved-filter-groups "default")))
 
-  ;; don't show these
-  ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+     ;; don't show these
+     ;(add-to-list 'ibuffer-never-show-predicates "zowie")
 
-  ;; Don't show filter groups if there are no buffers in that group
-  (setq ibuffer-show-empty-filter-groups nil)
+     ;; Don't show filter groups if there are no buffers in that group
+     (setq ibuffer-show-empty-filter-groups nil)
 
-  (use-package all-the-icons-ibuffer
-    :ensure t
-    :init (all-the-icons-ibuffer-mode 1))
+     (use-package all-the-icons-ibuffer
+       :ensure t
+       :init (all-the-icons-ibuffer-mode 1))
    #+END_SRC
 ** auto-complete
 #+BEGIN_SRC emacs-lisp
