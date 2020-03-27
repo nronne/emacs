@@ -37,7 +37,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))))
+    (all-the-icons spaceline-all-the-icons all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
