@@ -16,6 +16,10 @@
   (setq ring-bell-function 'ignore)
 #+END_SRC
 
+** Custom Keybindings
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-S-,") 'comment-region)
+#+END_SRC
 ** Buffer
 #+BEGIN_SRC emacs-lisp
   (require 'uniquify)
@@ -46,10 +50,7 @@
 
 * Theme
 #+BEGIN_SRC emacs-lisp
-	 ;;  (load-theme 'leuven)
-	 (add-to-list 'custom-theme-load-path "~/.emacs.d/custom_themes/emacs-leuven-theme")
-	 (load-theme 'leuven t)
-
+  (load-theme 'zenburn t)
 
   (use-package all-the-icons
     :ensure t)
@@ -61,14 +62,14 @@
     (doom-modeline-mode 1)
     (setq doom-modeline-buffer-encoding nil))
 
-;;    (setq doom-modeline-icon (display-graphic-p))
+  ;;    (setq doom-modeline-icon (display-graphic-p))
 
-(defun enable-doom-modeline-icons (_frame)
-  (setq doom-modeline-icon t))
-;; You need to run M-x 'all-the-icons-install-fonts' to get the propor fonts!
-  
-(add-hook 'after-make-frame-functions 
-          #'enable-doom-modeline-icons)
+  (defun enable-doom-modeline-icons (_frame)
+    (setq doom-modeline-icon t))
+  ;; You need to run M-x 'all-the-icons-install-fonts' to get the propor fonts!
+
+  (add-hook 'after-make-frame-functions 
+	    #'enable-doom-modeline-icons)
 
 #+END_SRC
 
