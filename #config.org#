@@ -1,0 +1,295 @@
+#+STARTUP: overview
+
+
+* General Setup
+** Interface
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (save-place-mode 1)
+  (show-paren-mode 1)
+  (column-number-mode 1)
+  ;; (global-display-line-numbers-mode 1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+
+** Custom Keybindings
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-S-,") 'comment-region)
+#+END_SRC
+** Buffer
+#+BEGIN_SRC emacs-lisp
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-separator "/")
+  (setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
+  (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
+  (global-set-key (kbd "C-x C-b") 'bs-show) ; Changes buffer-list
+#+END_SRC
+
+** Window
+#+BEGIN_SRC emacs-lisp
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings)) ; shift+arrow to move between windows
+#+END_SRC
+
+** Backup handling
+#+BEGIN_SRC emacs-lisp
+  (setq backup-by-copying t)
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+	backup-by-copying t    ; Don't delink hardlinks
+	version-control t      ; Use version numbers on backups
+	delete-old-versions t  ; Automatically delete excess backups
+	kept-new-versions 20   ; how many of the newest versions to keep
+	kept-old-versions 5    ; and how many of the old
+    )
+#+END_SRC
+
+* Theme
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'custom-theme-load-path "~/.emacs/custom-themes/emacs-leuven-theme")
+  (load-theme 'leuven t)
+
+  (use-package all-the-icons
+    :ensure t)
+
+  (use-package doom-modeline
+    :ensure t
+    :defer t
+    :init
+    (doom-modeline-mode 1)
+    (setq doom-modeline-buffer-encoding nil))
+
+  ;;    (setq doom-modeline-icon (display-graphic-p))
+
+  (defun enable-doom-modeline-icons (_frame)
+    (setq doom-modeline-icon t))
+  ;; You need to run M-x 'all-the-icons-install-fonts' to get the propor fonts!
+
+  (add-hook 'after-make-frame-functions 
+	    #'enable-doom-modeline-icons)
+
+#+END_SRC
+
+
+* Installed packages
+** try
+#+BEGIN_SRC emacs-lisp
+  (use-package try
+    :ensure t)
+#+END_SRC
+
+** which-key
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t 
+    :config
+    (which-key-mode))
+#+END_SRC
+
+** expand-region
+   #+BEGIN_SRC emacs-lisp
+     (use-package expand-region
+       :ensure t
+       :config
+       (global-set-key (kbd "M-SPC") 'er/expand-region))
+   #+END_SRC
+
+** iedit, narrow-or-widen-dwim
+   #+BEGIN_SRC emacs-lisp
+     ; mark and edit all copies of the marked region simultaniously. 
+     (use-package iedit
+       :ensure t
+       :config
+       (global-set-key (kbd "C-x c") 'iedit-mode))
+
+
+     ; if you're windened, narrow to the region, if you're narrowed, widen
+     ; bound to C-x n
+     (defun narrow-or-widen-dwim (p)
+       "If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
+     Intelligently means: region, org-src-block, org-subtree, or defun,
+     whichever applies first.
+     Narrowing to org-src-block actually calls `org-edit-src-code'.
+
+     With prefix P, don't widen, just narrow even if buffer is already
+     narrowed."
+       (interactive "P")
+     (declare (interactive-only))
+     (cond ((and (buffer-narrowed-p) (not p)) (widen))
+	   ((region-active-p)
+     (narrow-to-region (region-beginning) (region-end)))
+	   ((derived-mode-p 'org-mode)
+	    ;; `org-edit-src-code' is not a real narrowing command.
+     ;; Remove this first conditional if you don't want it.
+	    (cond ((ignore-errors (org-edit-src-code))
+		   (delete-other-windows))
+		  ((org-at-block-p)
+		   (org-narrow-to-block))
+		  (t (org-narrow-to-subtree))))
+	   (t (narrow-to-defun))))
+
+     ;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
+     ;; This line actually replaces Emacs' entire narrowing keymap, that's
+     ;; how much I like this command. Only copy it if that's what you want.
+     (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
+
+   #+END_SRC
+
+** org mode
+#+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  ;; Make windmove work in Org mode:
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
+#+END_SRC
+
+** ido
+#+BEGIN_SRC emacs-lisp
+  (setq ido-enable-flex-matching t) ; ido package  
+  (setq ido-everywhere t) 
+  (ido-mode 1)
+#+END_SRC
+
+** undo-tree
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :ensure t
+       :init
+       (global-undo-tree-mode))
+   #+END_SRC
+
+** counsel
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line)))
+
+#+END_SRC
+
+** swiper/ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    :diminish (ivy-mode)
+    :bind (("C-x b" . ivy-switch-buffer))
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "%d/%d ")
+    (setq ivy-display-style 'fancy))
+
+
+  (use-package swiper
+    :ensure t
+    :bind (("C-s" . swiper-isearch)
+	   ("C-r" . swiper-isearch)
+	   ("C-c C-r" . ivy-resume)
+	   ("M-x" . counsel-M-x)
+	   ("C-x C-f" . counsel-find-file))
+    :config
+    (progn
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-display-style 'fancy)
+      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+      ))
+#+END_SRC
+
+** ibuffer
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-x C-b") 'ibuffer)
+     (setq ibuffer-saved-filter-groups
+	      (quote (("default"
+		       ("dired" (mode . dired-mode))
+		       ("org" (name . "^.*org$"))
+		       ("git" (or 
+			       (mode . magit-blame-mode)
+			       (mode . magit-cherry-mode)
+			       (mode . magit-diff-mode)
+			       (mode . magit-log-mode)
+			       (mode . magit-process-mode)
+			       (mode . magit-status-mode)))
+		       ("web" (or (mode . web-mode) (mode . js2-mode)))
+		       ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+		       ("programming" (or
+				       (mode . python-mode)
+				       (mode . c-mode)
+				       (mode . csharp-mode)
+				       (mode . make-mode)))
+		       ("emacs" (or
+				 (name . "^\\*scratch\\*$")
+				 (name . "^\\*Messages\\*$")))
+		       ))))
+     (add-hook 'ibuffer-mode-hook
+		  (lambda ()
+		    (ibuffer-auto-mode 1)
+		    (ibuffer-switch-to-saved-filter-groups "default")))
+
+     ;; don't show these
+     ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+
+     ;; Don't show filter groups if there are no buffers in that group
+     (setq ibuffer-show-empty-filter-groups nil)
+
+     (use-package all-the-icons-ibuffer
+       :ensure t
+       :init (all-the-icons-ibuffer-mode 1))
+   #+END_SRC
+** auto-complete
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-complete
+    :ensure t
+    :init
+    (progn
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      ))
+#+END_SRC
+
+** autopair
+   #+BEGIN_SRC emacs-lisp
+     (use-package autopair
+       :ensure t
+       :init
+       (autopair-global-mode))
+   #+END_SRC
+
+* Git
+  #+BEGIN_SRC emacs-lisp
+    (use-package magit
+      :ensure t
+      :init
+      (progn
+	(bind-key "C-x g" 'magit-status)
+	))
+    (setq auto-revert-check-vc-info t)
+  #+END_SRC
+  
+  
+* Python-mode
+
+* Csharp-mode
+** csharp-mode
+   #+BEGIN_SRC emacs-lisp
+     (defun my-csharp-mode-hook ()
+	 )
+
+     (use-package csharp-mode
+       :ensure t
+       :config
+       (with-eval-after-load 'csharp-mode))
+   #+END_SRC
+
+
