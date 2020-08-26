@@ -31,13 +31,11 @@
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-safe-themes
-   (quote
-    ("672bb062b9c92e62d7c370897b131729c3f7fd8e8de71fc00d70c5081c80048c" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default)))
+   '("672bb062b9c92e62d7c370897b131729c3f7fd8e8de71fc00d70c5081c80048c" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default))
  '(debug-on-error t)
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
-   (quote
-    (spacemacs-theme alect-themes all-the-icons spaceline-all-the-icons all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))))
+   '(vue-html-mode vue-mode easy-kill csv-mode json-mode spacemacs-theme alect-themes all-the-icons spaceline-all-the-icons all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -45,3 +43,4 @@
  ;; If there is more than one, they won't work right.
  '(lsp-ui-doc-background ((t (:background nil))))
  '(lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic))))))
+(put 'dired-find-alternate-file 'disabled nil)

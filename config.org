@@ -1,6 +1,5 @@
 #+STARTUP: overview
 
-
 * General Setup
 ** Interface
 #+BEGIN_SRC emacs-lisp
@@ -48,9 +47,31 @@
     )
 #+END_SRC
 
+** Dont use arrow keys for movement
+#+BEGIN_SRC emacs-lisp
+  (mapc 'global-unset-key '([left] [right] [up] [down]))
+
+  (let ((arrow-key-mode-maps '(help-mode-map Info-mode-map)))
+    (mapc
+     (lambda (map)
+       (define-key (symbol-value map) [left] 'left-char)
+       (define-key (symbol-value map) [right] 'right-char)
+       (define-key (symbol-value map) [up] 'previous-line)
+       (define-key (symbol-value map) [down] 'next-line))
+     arrow-key-mode-maps))
+#+END_SRC
+
+** line numbers 
+#+BEGIN_SRC emacs-lisp
+  (global-display-line-numbers-mode)
+  (setq display-line-numbers-type 'relative)
+#+END_SRC
+
+
 * Theme
 #+BEGIN_SRC emacs-lisp
   (load-theme 'zenburn t)
+  
 
   (use-package all-the-icons
     :ensure t)
@@ -71,10 +92,19 @@
   (add-hook 'after-make-frame-functions 
 	    #'enable-doom-modeline-icons)
 
+  (set-cursor-color '"#ffffff")
 #+END_SRC
 
 
 * Installed packages
+** easy-kill
+#+BEGIN_SRC emacs-lisp
+  (use-package easy-kill
+    :ensure t
+    :config
+    (global-set-key [remap kill-ring-save] 'easy-kill))
+#+END_SRC
+
 ** try
 #+BEGIN_SRC emacs-lisp
   (use-package try
