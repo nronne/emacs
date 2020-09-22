@@ -59,33 +59,62 @@
     )
 #+END_SRC
 
+** Dont use arrow keys for movement
+#+BEGIN_SRC emacs-lisp
+  ;; (mapc 'global-unset-key '([left] [right] [up] [down]))
+
+  ;; (let ((arrow-key-mode-maps '(help-mode-map Info-mode-map)))
+  ;;   (mapc
+  ;;    (lambda (map)
+  ;;      (define-key (symbol-value map) [left] 'left-char)
+  ;;      (define-key (symbol-value map) [right] 'right-char)
+  ;;      (define-key (symbol-value map) [up] 'previous-line)
+  ;;      (define-key (symbol-value map) [down] 'next-line))
+  ;;    arrow-key-mode-maps))
+#+END_SRC
+
+** line numbers 
+#+BEGIN_SRC emacs-lisp
+  (global-display-line-numbers-mode)
+  (setq display-line-numbers-type 'relative)
+#+END_SRC
+
 * Theme
 #+BEGIN_SRC emacs-lisp
-	 ;;  (load-theme 'leuven)
-	 (add-to-list 'custom-theme-load-path "~/.emacs.d/custom_themes/emacs-leuven-theme")
-	 (load-theme 'leuven t)
-
-
-  (use-package all-the-icons
-    :ensure t)
-
-  (use-package doom-modeline
+  (use-package kaolin-themes
     :ensure t
-    :defer t
-    :init
-    (doom-modeline-mode 1)
-    (setq doom-modeline-buffer-encoding nil))
+    :config
+    (load-theme 'kaolin-light t))
 
-(defun enable-doom-modeline-icons (_frame)
-  (setq doom-modeline-icon t))
-  
-(add-hook 'after-make-frame-functions 
-          #'enable-doom-modeline-icons)
+
+    (use-package all-the-icons
+      :ensure t)
+
+    (use-package doom-modeline
+      :ensure t
+      :defer t
+      :init
+      (doom-modeline-mode 1)
+      (setq doom-modeline-buffer-encoding nil))
+
+    (defun enable-doom-modeline-icons (_frame)
+      (setq doom-modeline-icon t))
+
+    (add-hook 'after-make-frame-functions 
+	      #'enable-doom-modeline-icons)
 
 #+END_SRC
 
 
 * Installed packages
+** easy-kill
+#+BEGIN_SRC emacs-lisp
+  (use-package easy-kill
+    :ensure t
+    :config
+    (global-set-key [remap kill-ring-save] 'easy-kill))
+#+END_SRC
+
 ** try
 #+BEGIN_SRC emacs-lisp
   (use-package try
@@ -300,6 +329,7 @@
   ;;       (projectile-global-mode))
 #+END_SRC
 
+
 * Git
   #+BEGIN_SRC emacs-lisp
     (use-package magit
@@ -312,39 +342,5 @@
   #+END_SRC
   
 
-* Web  
-#+BEGIN_SRC emacs-lisp
-(use-package web-mode
-    :ensure t
-    :config
-	   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-	   (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
-	   (setq web-mode-engines-alist
-		 '(("django"    . "\\.html\\'")))
-	   (setq web-mode-ac-sources-alist
-	   '(("css" . (ac-source-css-property))
-	   ("vue" . (ac-source-words-in-buffer ac-source-abbrev))
-         ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-(setq web-mode-enable-auto-closing t))
-(setq web-mode-enable-auto-quoting t)
-#+END_SRC
-
-* Python-mode
-
-* Csharp-mode
-** csharp-mode
-   #+BEGIN_SRC emacs-lisp
-     (defun my-csharp-mode-hook ()
-	 )
-
-     (use-package csharp-mode
-       :ensure t
-       :config
-       (with-eval-after-load 'csharp-mode))
-   #+END_SRC
 
 
-* LaTex
-#+BEGIN_SRC emacs-lisp
-  ('latex-mode-hook (lambda () (flyspell-mode 1)))
-#+END_SRC

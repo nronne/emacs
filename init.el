@@ -37,7 +37,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (emojify ibuffer-projectile projectile yasnippet-snippets web-mode all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))))
+    (eglot kaolin-themes flacui-themes flatui-themes solarized-theme flucui-themes emojify ibuffer-projectile projectile yasnippet-snippets web-mode all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -45,3 +45,4 @@
  ;; If there is more than one, they won't work right.
  '(lsp-ui-doc-background ((t (:background nil))))
  '(lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic))))))
+(put 'dired-find-alternate-file 'disabled nil)

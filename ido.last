@@ -2,6 +2,15 @@
 
 ;; ----- ido-last-directory-list -----
 (
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/ASLA/asla/tests/" . "graphene_C7/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/ASLA/asla/" . "tests/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/ASLA/" . "asla/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/" . "ASLA/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/" . "opt/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/startup/ea/" . "example/")
+ ("/Users/au566369/.envs/" . "ml/")
+ ("/Users/au566369/" . ".envs/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/startup/" . "ea/")
  ("/System/Library/CoreServices/Finder.app/" . "Contents/")
  ("/System/Library/CoreServices/" . "Finder.app/")
  ("/System/Library/" . "CoreServices/")
@@ -13,6 +22,12 @@
 
 ;; ----- ido-work-directory-list -----
 (
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/ASLA/asla/modules/builders/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/ASLA/asla/modules/agents/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/ASLA/asla/tests/graphene_C7/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/startup/neb/6_to_5/autoneb/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/startup/latticeConstant/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/startup/"
  "/Users/nronne/Documents/udemy/webdev/"
 )
 
@@ -23,6 +38,24 @@
 
 ;; ----- ido-dir-file-cache -----
 (
+ ("/Users/au566369/.envs/ml/" (24397 2275 294405 595000) "share/" "lib/" ".gitignore" "pyvenv.cfg" "etc/" "bin/" "../" "./")
+
+ ("/Users/au566369/.envs/" (24397 2162 609181 520000) "postactivate" "startup/" "postmkvirtualenv" "premkproject" "ml/" "get_env_details" "premkvirtualenv" "preactivate" "postdeactivate" "postrmvirtualenv" "initialize" "predeactivate" "postmkproject" "prermvirtualenv" "../" "./")
+
+ ("/Users/au566369/" (24396 62073 367598 942000) ".account" ".serverauth.2751" ".viminfo" ".bash_history" ".gitconfig" ".cache/" ".python_history" "Downloads/" ".Xauthority" ".bash_profile" ".pyenv/" "Documents/" ".Trash/" ".envs/" "Applications/" "Movies/" ".ssh/" ".cisco/" "Public/" "courses/" ".bash_sessions/" ".cups/" ".emacs.d/" "Library/" "Desktop/" "Pictures/" ".local/" ".bash_profile~" ".CFUserTextEncoding" "get-pip.py" ".DS_Store" "Music/" ".config/" "../" "./")
+
+ ("/Users/au566369/courses/" (24396 62073 367715 600000) "ml/" "../" "./")
+
+ ("/Users/au566369/courses/ml/" (24397 2144 588567 667000) "._sync_6a54b09bc38b.db" "ML20/" "._sync_6a54b09bc38b.db-wal" "._sync_6a54b09bc38b.db-shm" "../" "./")
+
+ ("/Users/au566369/courses/ml/ML20/" (24396 62094 776451 607000) ".git/" "README.md" "week1/" "../" "./")
+
+ ("/Users/au566369/courses/ml/ML20/week1/" (24396 62094 864753 38000) ".ipynb_checkpoints/" "sklearn_intro.ipynb" "theory_mathquiz.ipynb" "README.md" "AboutPython.ipynb" "../" "./")
+
+ ("/Users/au566369/Documents/" (24391 30775 526126 125000) "2018_Book_NeuralNetworksAndDeepLearning.pdf" "notes/" "masterclass/" "._sync_eba07019eb5c.db" "._sync_11952179dfb9.db" "blog/" "._sync_eba07019eb5c.db-shm" "._sync_eba07019eb5c.db-wal" ".localized" "papers/" ".DS_Store" "../" "./")
+
+ ("/Users/au566369/Documents/blog/" (24365 14783 14126 604000) "lattice_params/" "pw_plot.png" "blog.tex" "k_488_fine.png" "k_plot.png" "k_111.png" "../" "./")
+
  ("/Users/nronne/Documents/Praktisk programmering/problems/ode/B/" (24212 11648 262483 868000) "sir_model.svg" "main.exe" "main.cs" "log.txt" "Makefile" "matlib.dll" "out.txt" "../" "./")
 
  ("/Users/nronne/.homeserver/" (24194 20743 386586 379000) "ssh_config" "../" "./")
