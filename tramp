@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <20/08/25 16:37:39 /home/nronne/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <20/11/26 23:07:45 /home/nronne/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; Run `M-x tramp-cleanup-all-connections' instead.
 
@@ -32,4 +32,32 @@
   ("tmpdir" "/ssh:grendel:/tmp")
   ("touch-t" t)
   ("touch" "\\touch")
-  ("uid-integer" 1240)))
+  ("uid-integer" 1240))
+ ((tramp-file-name "ssh" "roenne" nil "grendel-s.cscaa.dk" nil nil nil)
+  ("uname" "Linux 3.10.0-514.2.2.el7.x86_64")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("test" "test")
+  ("remote-path"
+   ("/usr/bin" "/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("pipe-buf" 4096)
+  ("remote-shell" "/bin/sh")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("file-exists" "test -e")
+  ("case-insensitive" nil)
+  ("~" "/home/roenne")
+  ("readlink" "\\readlink")
+  ("stat" "env QUOTING_STYLE=locale \\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 512)
+  ("gid-string" "fysbh")
+  ("bzr" nil)
+  ("git" "\\git")
+  ("hg" nil)
+  ("uid-integer" 1240)
+  ("ls" "/usr/bin/ls --color=never")
+  ("ls--quoting-style=literal --show-control-chars" "--quoting-style=literal --show-control-chars")
+  ("ls--dired" "--dired")
+  ("df-blocksize" 1)
+  ("df" "\\df --block-size=1 --output=size,used,avail")))

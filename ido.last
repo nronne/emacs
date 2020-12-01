@@ -2,6 +2,11 @@
 
 ;; ----- ido-last-directory-list -----
 (
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/" . "roenne/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/pem/schnet/model_a-C/subset_train_all/" . "comb_runs/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/pem/gap/" . "gofee-data/")
+ ("/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/" . "bachelor/")
+ ("/home/nronne/" . "Documents/")
  ("/ssh:grendel:/home/roenne/startup/adsorbate/" . "o/")
  ("/System/Library/CoreServices/Finder.app/" . "Contents/")
  ("/System/Library/CoreServices/" . "Finder.app/")
@@ -14,6 +19,12 @@
 
 ;; ----- ido-work-directory-list -----
 (
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/pem/data/gap-gpaw-training/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/pem/gap/gofee-data/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/pem/schnet/water/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/pem/gap/tutorial/md_dftb_9x9/"
+ "/ssh:roenne@grendel-s.cscaa.dk:/home/roenne/opt/QUIP/test/"
+ "/home/nronne/Documents/"
  "/ssh:grendel:/home/roenne/startup/adsorbate/o/v4/"
  "/ssh:grendel:/home/roenne/startup/xc/o/lda/find_lattice_constants/"
  "/home/nronne/Documents/test/"
@@ -35,17 +46,21 @@
 
 ;; ----- ido-dir-file-cache -----
 (
- ("/ssh:grendel:/home/roenne/startup/adsorbate/o/v4/" (ftp . 443989.7740036493) "./" "../" "slab_rect_1x2_init.traj" "adsorbate_binding_e.py" "run.job" "slurm-5551612.out" "ads_energy.out" "slurm-5551618.out" "surf.txt" "pos1.txt" "pos1.log" "pos1.traj" "pos2.txt" "pos2.log" "pos2.traj" "pos3.txt" "pos3.log" "pos3.traj" "pos4.txt" "pos4.log" "pos4.traj" "pos5.txt" "pos5.log" "pos5.traj" "pos6.txt" "pos6.log" "pos6.traj" "pos7.txt" "pos7.log" "pos7.traj" "recal_out.py")
+ ("/home/nronne/Documents/" (24479 46326 904227 889000) "electrodynamics/" "Dropbox/" "._sync_b60cff96f9ee.db-wal" "homeserver/" "ppnm/" "../" ".sync-exclude.lst" "notes.org" "._sync_b60cff96f9ee.db-shm" "solidstate/" "udemy/" "rachel.txt" "zimble_db/" "tia/" "test/" "trash/" "homer/" "._sync_b60cff96f9ee.db" "./" "ml/")
 
- ("/ssh:grendel:/home/roenne/startup/xc/o/lda/find_lattice_constants/" (ftp . 443988.6124724293) "./" "../" "find_bulk_params.py" "bulk_init.traj" "energy_plot.py" "run.job" "slurm-1828.out" "bulk_params_lda.out" "bulk.txt" "bulk_a_3.4_b_10.0.traj" "bulk_a_3.4_b_10.2.traj" "bulk_a_3.4_b_10.4.traj" "bulk_a_3.4_b_10.6.traj" "bulk_a_3.4_b_10.8.traj" "bulk_a_3.4_b_11.0.traj" "bulk_a_3.6_b_10.0.traj" "bulk_a_3.6_b_10.2.traj" "bulk_a_3.6_b_10.4.traj" "bulk_a_3.6_b_10.6.traj" "bulk_a_3.6_b_10.8.traj" "bulk_a_3.6_b_11.0.traj" "bulk_a_3.8_b_10.0.traj" "bulk_a_3.8_b_10.2.traj" "bulk_a_3.8_b_10.4.traj" "bulk_a_3.8_b_10.6.traj" "bulk_a_3.8_b_10.8.traj" "bulk_a_3.8_b_11.0.traj" "bulk_a_4.0_b_10.0.traj" "bulk_a_4.0_b_10.2.traj" "bulk_a_4.0_b_10.4.traj" "bulk_a_4.0_b_10.6.traj" "bulk_a_4.0_b_10.8.traj" "bulk_a_4.0_b_11.0.traj" "bulk_a_4.2_b_10.0.traj" "bulk_a_4.2_b_10.2.traj" "bulk_a_4.2_b_10.4.traj" "bulk_a_4.2_b_10.6.traj" "bulk_a_4.2_b_10.8.traj" "bulk_a_4.2_b_11.0.traj" "bulk_a_4.4_b_10.0.traj" "bulk_a_4.4_b_10.2.traj" "bulk_a_4.4_b_10.4.traj" "bulk_a_4.4_b_10.6.traj" "bulk_a_4.4_b_10.8.traj" "bulk_a_4.4_b_11.0.traj" "slurm-1920.out" "bulk_a_3.4_b_9.4.traj" "bulk_a_3.4_b_9.6.traj" "bulk_a_3.4_b_9.8.traj" "bulk_a_3.6_b_9.4.traj" "trash/" "bulk_a_3.6_b_9.6.traj" "bulk_a_3.6_b_9.8.traj" "bulk_a_3.8_b_9.4.traj" "bulk_a_3.8_b_9.6.traj" "bulk_a_3.8_b_9.8.traj" "bulk_a_4.0_b_9.4.traj" "bulk_a_4.0_b_9.6.traj" "bulk_a_4.0_b_9.8.traj" "bulk_a_4.2_b_9.4.traj" "bulk_a_4.2_b_9.6.traj" "bulk_a_4.2_b_9.8.traj" "bulk_a_4.4_b_9.4.traj" "bulk_a_4.4_b_9.6.traj" "bulk_a_4.4_b_9.8.traj" "lda_122_500.png")
+ ("/home/nronne/" (24445 57606 572899 116000) ".launchpadlib/" ".npm/" ".dmrc" ".python_history" ".wget-hsts" ".gphoto/" ".config/" ".authinfo" ".pki/" "Templates/" ".emacs.d/" "vm/" ".ssh/" "../" "Public/" ".sudo_as_admin_successful" ".bashrc" "zimble-site/" "envs/" ".Xauthority" "Videos/" ".ngrok/" ".dropbox-dist/" ".gtk-bookmarks" ".vscode/" ".gnupg/" ".gitconfig" ".zoom/" "zimble-sort/" ".slurm.el/" ".bash_history" "Music/" ".dropbox/" "snap/" ".local/" ".vuerc" ".pam_environment" ".clamtk/" ".vue-templates/" "test" "dotfiles/" ".lesshst" "Desktop/" "work/" ".mozilla/" ".cache/" ".bash_aliases" ".bash_logout" ".profile" ".anyconnect" ".icons/" ".themes/" ".jupyter/" ".ipython/" ".xsession-errors" "Documents/" "Pictures/" ".xbindkeysrc" "Downloads/" "./" ".xsession-errors.old")
 
- ("/home/nronne/Documents/test/" (24385 34928 14187 513000) "wrong-package.json" "../" "AUTHORS" "README (conflicted copy 2020-08-22 215402).md" "CHANGELOG.md" "LICENSE" "babel.config.js" ".gitignore" ".git/" "node_modules/" "src/" "package-lock.json" "README.md" "./" "package (conflicted copy 2020-08-22 215556).json" "public/")
+ ("/home/nronne/Documents/test/src/components/" (24385 35867 925071 53000) "Modal.vue" "../" "HelloWorld.vue" "./")
 
- ("/home/nronne/Documents/test/src/" (24384 64959 874539 374000) "main.js" "components/" "../" "assets/" "App.vue" "./")
+ ("/home/nronne/Documents/test/public/" (24385 30662 230786 627000) "../" "index.html" "favicon.ico" "./")
 
- ("/home/nronne/Documents/test/public/" (24384 59669 764240 913000) "../" "index.html" "favicon.ico" "./")
+ ("/home/nronne/Documents/test/src/" (24385 33737 43813 707000) "main.js" "components/" "../" "assets/" "App.vue" "./")
 
- ("/home/nronne/Documents/test/src/components/" (24384 59669 764240 913000) "../" "HelloWorld.vue" "./")
+ ("/home/nronne/Documents/test/" (24385 35149 576800 944000) "../" "AUTHORS" "README (conflicted copy 2020-08-22 215402).md" "CHANGELOG.md" "LICENSE" "package.json" "babel.config.js" ".gitignore" ".git/" "node_modules/" "src/" "package-lock.json" "README.md" "./" "public/")
+
+ ("/home/nronne/work/" (24423 1576 311631 128000) "../" "notes/" "._sync_eba07019eb5c.db-wal" "db/" "masterclass/" "papers/" "2018_Book_NeuralNetworksAndDeepLearning.pdf" "NOTES.org" "._sync_eba07019eb5c.db-shm" "blog/" ".localized" "NOTES (conflicted copy 2020-09-15 120203).org" "._sync_eba07019eb5c.db" "læsepladser/" "./" "ml/")
+
+ ("/home/nronne/Documents/zimble-site/" (24385 36204 10948 607000) "../" "package.json" "babel.config.js" ".gitignore" ".git/" "node_modules/" "src/" "package-lock.json" "README.md" "./" "public/")
 
  ("/home/nronne/Documents/test-package/src/" (24384 57574 69409 826000) "main.js" "../" "assets/" "new-page.vue" "App.vue" "./")
 
@@ -56,8 +71,6 @@
  ("/home/nronne/Documents/ppnm/" (24278 14511 801879 314000) "matlib/" "../" "README.org" "problems/" ".gitignore" ".git/" "exercises/" "lectures/" "exam/" "./")
 
  ("/home/nronne/Documents/ppnm/exam/" (24290 32 660152 367000) "main.cs" "../" "Makefile" "out.txt" "lib/" "./" "main.exe" "matlib.dll" "official/")
-
- ("/home/nronne/Documents/" (24272 54187 324134 326000) "Dropbox/" "homeserver/" "ppnm/" "../" "firebaseTest/" "Readme.md" "solidstate/" "udemy/" "rachel.txt" "tia/" "homer/" "._sync_b60cff96f9ee.db" "./")
 
  ("/home/nronne/Documents/ppnm/problems/" (24250 19390 575848 636000) "montecarlo/" "../" "minimization/" "interpolation/" "eigval/" "ode/" "oleastsquare/" "integration/" "ann/" "./" "roots/" "lineq/")
 

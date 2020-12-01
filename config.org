@@ -70,8 +70,10 @@
 
 * Theme
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'zenburn t)
-  
+(use-package kaolin-themes
+  :ensure t
+  :config
+  (load-theme 'kaolin-light t))
 
   (use-package all-the-icons
     :ensure t)
@@ -301,6 +303,13 @@
           (lambda ()
             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 #+END_SRC
+** slurm
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.slurm.el")
+(require 'slurm-mode)
+(require 'slurm-script-mode)
+#+END_SRC
+
 * Git
   #+BEGIN_SRC emacs-lisp
     (use-package magit
@@ -312,6 +321,7 @@
     (setq auto-revert-check-vc-info t)
   #+END_SRC
   
+
   
 * Python-mode
 
@@ -327,4 +337,34 @@
        (with-eval-after-load 'csharp-mode))
    #+END_SRC
 
+
+* WEB
+** JS2-mode
+#+BEGIN_SRC emacs-lisp
+(use-package js2-mode
+  :ensure t)
+#+END_SRC
+** css-mode
+#+BEGIN_SRC emacs-lisp
+(use-package css-mode
+  :ensure t
+)
+#+END_SRC
+** vue-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package vue-mode
+    :ensure t
+    :config
+    (setq mmm-submode-decoration-level 0))
+#+END_SRC
+** JS2-mode
+#+BEGIN_ emacs-lisp
+  (use-package json-mode
+    :ensure t)
+#+END_SRC
+** web-mode
+#+BEGIN_ emacs-lisp
+(use-package web-mode
+  :ensure t)
+#+END_SRC
 

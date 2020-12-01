@@ -19,3 +19,7 @@ source .bashrc
 cd
 lo
 source .bashrc
+pwd
+pwd
+lo
+ssh roenne@grendel-s.cscaa.dk
