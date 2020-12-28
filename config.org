@@ -1,5 +1,6 @@
 #+STARTUP: overview
-
+# PACKAGES to try: For python: BLACK. And something for virtualenv. 
+# and something for recommendations.
 * General Setup
 ** Interface
 #+BEGIN_SRC emacs-lisp
@@ -49,18 +50,17 @@
 
 ** Dont use arrow keys for movement
 #+BEGIN_SRC emacs-lisp
-  (mapc 'global-unset-key '([left] [right] [up] [down]))
+  ;; (mapc 'global-unset-key '([left] [right] [up] [down]))
 
-  (let ((arrow-key-mode-maps '(help-mode-map Info-mode-map)))
-    (mapc
-     (lambda (map)
-       (define-key (symbol-value map) [left] 'left-char)
-       (define-key (symbol-value map) [right] 'right-char)
-       (define-key (symbol-value map) [up] 'previous-line)
-       (define-key (symbol-value map) [down] 'next-line))
-     arrow-key-mode-maps))
+  ;; (let ((arrow-key-mode-maps '(help-mode-map Info-mode-map)))
+  ;;   (mapc
+  ;;    (lambda (map)
+  ;;      (define-key (symbol-value map) [left] 'left-char)
+  ;;      (define-key (symbol-value map) [right] 'right-char)
+  ;;      (define-key (symbol-value map) [up] 'previous-line)
+  ;;      (define-key (symbol-value map) [down] 'next-line))
+  ;;    arrow-key-mode-maps))
 #+END_SRC
-
 ** line numbers 
 #+BEGIN_SRC emacs-lisp
   (global-display-line-numbers-mode)
@@ -73,7 +73,7 @@
 (use-package kaolin-themes
   :ensure t
   :config
-  (load-theme 'kaolin-light t))
+  (load-theme 'kaolin-dark t))
 
   (use-package all-the-icons
     :ensure t)
@@ -305,9 +305,9 @@
 #+END_SRC
 ** slurm
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.slurm.el")
-(require 'slurm-mode)
-(require 'slurm-script-mode)
+  ;; (add-to-list 'load-path "~/.slurm.el")
+  ;; (require 'slurm-mode)
+  ;; (require 'slurm-script-mode)
 #+END_SRC
 
 * Git
