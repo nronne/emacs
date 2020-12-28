@@ -84,7 +84,7 @@
   (use-package kaolin-themes
     :ensure t
     :config
-    (load-theme 'kaolin-light t))
+    (load-theme 'kaolin-dark t))
 
 
     (use-package all-the-icons
