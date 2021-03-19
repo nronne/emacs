@@ -35,7 +35,8 @@
  '(debug-on-error t)
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
-   '(kaolin-themes vue-html-mode vue-mode easy-kill csv-mode json-mode spacemacs-theme alect-themes all-the-icons spaceline-all-the-icons all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel)))
+   '(doom-themes vterm kaolin-themes vue-html-mode vue-mode easy-kill csv-mode json-mode spacemacs-theme alect-themes all-the-icons spaceline-all-the-icons all-the-icons-ibuffer leuven-theme zenburn-theme wrap-region doom-modeline expand-region flycheck which-key use-package try org-bullets help-find-org-mode dash counsel))
+ '(tramp-inline-compress-start-size 1000000))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

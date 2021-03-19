@@ -62,39 +62,53 @@
   ;;    arrow-key-mode-maps))
 #+END_SRC
 ** line numbers 
-#+BEGIN_SRC emacs-lisp
-  (global-display-line-numbers-mode)
-  (setq display-line-numbers-type 'relative)
-#+END_SRC
+ #+begin_SRC emacs-lisp
+   (global-display-line-numbers-mode)
+   (setq display-line-numbers-type 'relative)
+ #+END_SRC
+** dired
+ #+begin_SRC emacs-lisp
+ (setq dired-dwim-target t)
+ #+END_SRC
+** Tramp
+ #+begin_SRC emacs-lisp
+(customize-set-variable 'tramp-inline-compress-start-size 1000000)
+(setq tramp-default-method "ssh")
+(setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+   ;; (add-to-list 'tramp-default-proxies-alist
+   ;; 	     '("grendel-s.cscaa.dk" nil "/ssh:roenne@step.cscaa.dk:"))
+ #+END_SRC
 
-
-* Theme
+* theme
 #+BEGIN_SRC emacs-lisp
-(use-package kaolin-themes
+  ;; (use-package kaolin-themes
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'kaolin-dark t))
+  (use-package doom-themes
   :ensure t
-  :config
-  (load-theme 'kaolin-dark t))
+  :init (load-theme 'doom-moonlight t))
 
-  (use-package all-the-icons
-    :ensure t)
+    (use-package all-the-icons
+      :ensure t)
 
-  (use-package doom-modeline
-    :ensure t
-    :defer t
-    :init
-    (doom-modeline-mode 1)
-    (setq doom-modeline-buffer-encoding nil))
+    (use-package doom-modeline
+      :ensure t
+      :defer t
+      :init (doom-modeline-mode 1)
+      :custom (doom-modeline-height 35)
+      :config (setq doom-modeline-buffer-encoding nil))
 
-  ;;    (setq doom-modeline-icon (display-graphic-p))
+    ;;    (setq doom-modeline-icon (display-graphic-p))
 
-  (defun enable-doom-modeline-icons (_frame)
-    (setq doom-modeline-icon t))
-  ;; You need to run M-x 'all-the-icons-install-fonts' to get the propor fonts!
+    (defun enable-doom-modeline-icons (_frame)
+      (setq doom-modeline-icon t))
+    ;; You need to run M-x 'all-the-icons-install-fonts' to get the propor fonts!
 
-  (add-hook 'after-make-frame-functions 
-	    #'enable-doom-modeline-icons)
+    (add-hook 'after-make-frame-functions 
+	      #'enable-doom-modeline-icons)
 
-  (set-cursor-color '"#ffffff")
+    (set-cursor-color '"#ffffff")
 #+END_SRC
 
 
@@ -310,6 +324,19 @@
   ;; (require 'slurm-script-mode)
 #+END_SRC
 
+** vterm
+#+BEGIN_SRC emacs-lisp
+(use-package vterm
+    :ensure t)
+
+(push (list "find-file-below"
+            (lambda (path)
+              (if-let* ((buf (find-file-noselect path))
+                        (window (display-buffer-below-selected buf nil)))
+                  (select-window window)
+                (message "Failed to open file: %s" path))))
+      vterm-eval-cmds)
+#+END_SRC
 * Git
   #+BEGIN_SRC emacs-lisp
     (use-package magit
