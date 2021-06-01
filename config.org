@@ -72,11 +72,13 @@
  #+END_SRC
 ** Tramp
  #+begin_SRC emacs-lisp
-(customize-set-variable 'tramp-inline-compress-start-size 1000000)
-(setq tramp-default-method "ssh")
-(setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-   ;; (add-to-list 'tramp-default-proxies-alist
-   ;; 	     '("grendel-s.cscaa.dk" nil "/ssh:roenne@step.cscaa.dk:"))
+   (customize-set-variable 'tramp-inline-compress-start-size 1000000)
+   (setq tramp-default-method "ssh")
+   (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+      ;; (add-to-list 'tramp-default-proxies-alist
+      ;; 	     '("grendel-s.cscaa.dk" nil "/ssh:roenne@step.cscaa.dk:"))
+   ;; (add-to-list 'tramp-remote-path "/comm/swstack/tools/git/2.14.2/bin/git")
+   ;; (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
  #+END_SRC
 
 * theme
