@@ -1,4 +1,0 @@
-ls
-cd latticeConstant/
-ls -otr
-tail -f slurm-5512484.out 

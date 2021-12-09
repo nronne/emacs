@@ -59,20 +59,10 @@
     )
 #+END_SRC
 
-** Dont use arrow keys for movement
+** autopair
 #+BEGIN_SRC emacs-lisp
-  ;; (mapc 'global-unset-key '([left] [right] [up] [down]))
-
-  ;; (let ((arrow-key-mode-maps '(help-mode-map Info-mode-map)))
-  ;;   (mapc
-  ;;    (lambda (map)
-  ;;      (define-key (symbol-value map) [left] 'left-char)
-  ;;      (define-key (symbol-value map) [right] 'right-char)
-  ;;      (define-key (symbol-value map) [up] 'previous-line)
-  ;;      (define-key (symbol-value map) [down] 'next-line))
-  ;;    arrow-key-mode-maps))
+  (electric-pair-mode 1)
 #+END_SRC
-
 ** line numbers 
 #+BEGIN_SRC emacs-lisp
   (global-display-line-numbers-mode)
@@ -308,14 +298,6 @@
       ))
 #+END_SRC
 
-** autopair
-   #+BEGIN_SRC emacs-lisp
-     (use-package autopair
-       :ensure t
-       :init
-       (autopair-global-mode))
-   #+END_SRC
-
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
   ;; (use-package yasnippet
@@ -337,40 +319,40 @@
 
 ** vterm
 #+BEGIN_SRC emacs-lisp
-(use-package vterm
-    :load-path "/Users/au566369/opt/emacs-libvterm/")
+  (use-package vterm
+      :load-path "/Users/au566369/opt/emacs-libvterm/")
 
-(push (list "find-file-below"
-            (lambda (path)
-              (if-let* ((buf (find-file-noselect path))
-                        (window (display-buffer-below-selected buf nil)))
-                  (select-window window)
-                (message "Failed to open file: %s" path))))
-      vterm-eval-cmds)
+  (push (list "find-file-below"
+	      (lambda (path)
+		(if-let* ((buf (find-file-noselect path))
+			  (window (display-buffer-below-selected buf nil)))
+		    (select-window window)
+		  (message "Failed to open file: %s" path))))
+	vterm-eval-cmds)
 
-(push (list "find-file-above"
-            (lambda (path)
-              (if-let* ((buf (find-file-noselect path))
-                        (window (display-buffer-in-direction buf 'above)))
-                  (select-window window)
-                (message "Failed to open file: %s" path))))
-      vterm-eval-cmds)
+  (push (list "find-file-above"
+	      (lambda (path)
+		(if-let* ((buf (find-file-noselect path))
+			  (window (display-buffer-in-direction buf 'above)))
+		    (select-window window)
+		  (message "Failed to open file: %s" path))))
+	vterm-eval-cmds)
 
-(push (list "find-file-right"
-            (lambda (path)
-              (if-let* ((buf (find-file-noselect path))
-                        (window (display-buffer-in-direction buf "right")))
-                  (select-window window)
-                (message "Failed to open file: %s" path))))
-      vterm-eval-cmds)
+  (push (list "find-file-right"
+	      (lambda (path)
+		(if-let* ((buf (find-file-noselect path))
+			  (window (display-buffer-in-direction buf "right")))
+		    (select-window window)
+		  (message "Failed to open file: %s" path))))
+	vterm-eval-cmds)
 
-(push (list "find-file-left"
-            (lambda (path)
-              (if-let* ((buf (find-file-noselect path))
-                        (window (display-buffer-in-direction buf "left")))
-                  (select-window window)
-                (message "Failed to open file: %s" path))))
-      vterm-eval-cmds)
+  (push (list "find-file-left"
+	      (lambda (path)
+		(if-let* ((buf (find-file-noselect path))
+			  (window (display-buffer-in-direction buf "left")))
+		    (select-window window)
+		  (message "Failed to open file: %s" path))))
+	vterm-eval-cmds)
 
 #+END_SRC
 ** tramp

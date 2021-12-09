@@ -8,3 +8,8 @@ old_config.org
 trash
 config.el
 /transient/
+config.el
+eshell/*
+ido.last
+projectile-bookmarks.eld
+tramp
