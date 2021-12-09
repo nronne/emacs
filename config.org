@@ -1,20 +1,20 @@
 #+STARTUP: overview
-
-
 * General Setup
 ** Remap for MacOS
    #+BEGIN_SRC emacs-lisp
-     ;; With same remap in iterm2 and right-command-key set up to be control with Karabiner-elements.
-     ;     (if (eq system-type 'darwin)
-     (dolist (key '("\M-8" "\M-9" "\M-/" "\M-(" "\M-)" "\M-i"))
-       (global-unset-key key))
-     (global-set-key (kbd "M-(") "{")
-     (global-set-key (kbd "M-)") "}")
-     (global-set-key (kbd "M-8") "[")
-     (global-set-key (kbd "M-9") "]")
-     (global-set-key (kbd "M-/") "\\")
-     (global-set-key (kbd "M-'") "@")
-     (global-set-key (kbd "M-i") "|");)
+     ;; ;; With same remap in iterm2 and right-command-key set up to be control with Karabiner-elements.
+     ;; ;     (if (eq system-type 'darwin)
+     ;; (dolist (key '("\M-8" "\M-9" "\M-/" "\M-(" "\M-)" "\M-i"))
+     ;;   (global-unset-key key))
+     ;; (global-set-key (kbd "M-(") "{")
+     ;; (global-set-key (kbd "M-)") "}")
+     ;; (global-set-key (kbd "M-8") "[")
+     ;; (global-set-key (kbd "M-9") "]")
+     ;; (global-set-key (kbd "M-/") "\\")
+     ;; (global-set-key (kbd "M-'") "@")
+     ;; (global-set-key (kbd "M-i") "|");)
+
+     (setq mac-command-modifier 'meta)
    #+END_SRC
 
 ** Interface
@@ -81,10 +81,16 @@
 
 * Theme
 #+BEGIN_SRC emacs-lisp
-  (use-package kaolin-themes
-    :ensure t
-    :config
-    (load-theme 'kaolin-light t))
+  ;; (use-package kaolin-themes
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'kaolin-light t))
+  (use-package doom-themes
+  :ensure t
+  :init (load-theme 'doom-moonlight t))
+
+  (use-package all-the-icons
+    :ensure t)
 
 
     (use-package all-the-icons
@@ -329,7 +335,53 @@
   ;;       (projectile-global-mode))
 #+END_SRC
 
+** vterm
+#+BEGIN_SRC emacs-lisp
+(use-package vterm
+    :load-path "/Users/au566369/opt/emacs-libvterm/")
 
+(push (list "find-file-below"
+            (lambda (path)
+              (if-let* ((buf (find-file-noselect path))
+                        (window (display-buffer-below-selected buf nil)))
+                  (select-window window)
+                (message "Failed to open file: %s" path))))
+      vterm-eval-cmds)
+
+(push (list "find-file-above"
+            (lambda (path)
+              (if-let* ((buf (find-file-noselect path))
+                        (window (display-buffer-in-direction buf 'above)))
+                  (select-window window)
+                (message "Failed to open file: %s" path))))
+      vterm-eval-cmds)
+
+(push (list "find-file-right"
+            (lambda (path)
+              (if-let* ((buf (find-file-noselect path))
+                        (window (display-buffer-in-direction buf "right")))
+                  (select-window window)
+                (message "Failed to open file: %s" path))))
+      vterm-eval-cmds)
+
+(push (list "find-file-left"
+            (lambda (path)
+              (if-let* ((buf (find-file-noselect path))
+                        (window (display-buffer-in-direction buf "left")))
+                  (select-window window)
+                (message "Failed to open file: %s" path))))
+      vterm-eval-cmds)
+
+#+END_SRC
+** tramp
+#+BEGIN_SRC emacs-lisp
+  (customize-set-variable 'tramp-inline-compress-start-size 1000000)
+  (setq tramp-default-method "ssh")
+  (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+
+  ;; (setq magit-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
+
+#+END_SRC
 * Git
   #+BEGIN_SRC emacs-lisp
     (use-package magit

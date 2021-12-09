@@ -1,0 +1,31 @@
+from ase.calculators.gpaw_io import GPAW_IO
+from ase.io import read, write
+from ase.optimize import BFGS,  BFGSLineSearch
+
+from gpaw import GPAW, FermiDirac, PoissonSolver, Mixer, PW
+from gpaw import extra_parameters
+extra_parameters['blacs'] = True
+from gpaw.utilities import h2gpts
+
+
+
+strucs = read('e3.traj', ':')
+for s in strucs:
+    calc = GPAW(poissonsolver = PoissonSolver(eps = 1.0e-7),
+          mode = 'lcao',
+          basis = 'dzp',
+          xc='PBE',
+          gpts = h2gpts(0.2, s.get_cell(), idiv = 8),
+          occupations=FermiDirac(0.1),
+          maxiter=99,
+          mixer=Mixer(nmaxold=5, beta=0.05, weight=75),
+          nbands=-50,
+          kpts=(1,1,1))
+
+    s.set_calculator(calc)
+    dyn = BFGSLineSearch(s, trajectory='e3_relax_trajectory_BFGSLineSearch.traj')
+    dyn.run(fmax=0.05)
+    # s.get_potential_energy()
+    # s.get_forces()
+
+write('e3_relax_BFGSLineSearch.traj', strucs)
