@@ -1,19 +1,12 @@
 #+STARTUP: overview
 * General Setup
+
+** Initial screen size
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'window-setup-hook 'toggle-frame-maximized t)
+#+END_SRC      
 ** Remap for MacOS
    #+BEGIN_SRC emacs-lisp
-     ;; ;; With same remap in iterm2 and right-command-key set up to be control with Karabiner-elements.
-     ;; ;     (if (eq system-type 'darwin)
-     ;; (dolist (key '("\M-8" "\M-9" "\M-/" "\M-(" "\M-)" "\M-i"))
-     ;;   (global-unset-key key))
-     ;; (global-set-key (kbd "M-(") "{")
-     ;; (global-set-key (kbd "M-)") "}")
-     ;; (global-set-key (kbd "M-8") "[")
-     ;; (global-set-key (kbd "M-9") "]")
-     ;; (global-set-key (kbd "M-/") "\\")
-     ;; (global-set-key (kbd "M-'") "@")
-     ;; (global-set-key (kbd "M-i") "|");)
-
      (setq mac-command-modifier 'meta)
    #+END_SRC
 
@@ -41,11 +34,6 @@
   (global-set-key (kbd "C-x C-b") 'bs-show) ; Changes buffer-list
 #+END_SRC
 
-** Window
-#+BEGIN_SRC emacs-lisp
-  (when (fboundp 'windmove-default-keybindings)
-    (windmove-default-keybindings)) ; shift+arrow to move between windows
-#+END_SRC
 
 ** Backup handling
 #+BEGIN_SRC emacs-lisp
@@ -89,14 +77,11 @@
 #+END_SRC
 ** python mode
 #+BEGIN_SRC emacs-lisp
-  ;; (setq python-shell-interpreter "python")
-#+END_SRC   
+  ;; (setq python-shell-interpreter "python3")
+#+END_SRC
+
 * Theme
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package kaolin-themes
-  ;;   :ensure t
-  ;;   :config
-  ;;   (load-theme 'kaolin-light t))
   (use-package doom-themes
   :ensure t
   :init (load-theme 'doom-moonlight t))
@@ -161,7 +146,7 @@
      (use-package iedit
        :ensure t
        :config
-       (global-set-key (kbd "C-x c") 'iedit-mode))
+       (global-set-key (kbd "C-;") 'iedit-mode))
 
 
      ; if you're windened, narrow to the region, if you're narrowed, widen
@@ -361,25 +346,25 @@
 (use-package vterm-toggle
   :straight (vterm-toggle :type git :host github :repo "jixiuf/vterm-toggle" :branch "master"))
 
-(global-set-key [f9] 'vterm-toggle)
-(global-set-key [C-f9] 'vterm-toggle-cd)
+(global-set-key [C-tab] 'vterm-toggle)
+(global-set-key [C-M-tab] 'vterm-toggle-cd)
 #+END_SRC
 ** tramp
 #+BEGIN_SRC emacs-lisp
-  (customize-set-variable 'tramp-inline-compress-start-size 1000000)
-  (setq tramp-default-method "ssh")
-  (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
- (setq magit-remote-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
-  ;; (setq magit-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
+   (customize-set-variable 'tramp-inline-compress-start-size 1000000)
+   (setq tramp-default-method "ssh")
+   (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+  (setq magit-remote-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
+   ;; (setq magit-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
 
 #+END_SRC
 
 ** pyvenv
 #+BEGIN_SRC emacs-lisp
-(use-package pyvenv
-  :ensure t
-  :config
-  (pyvenv-mode 1))
+  (use-package pyvenv
+    :ensure t
+    :config
+    (pyvenv-mode 1))
 #+END_SRC   
 ** copilot
 #+BEGIN_SRC emacs-lisp
@@ -402,6 +387,27 @@
 
 
 #+END_SRC   
+
+** treemacs
+#+BEGIN_SRC emacs-lisp
+(use-package treemacs
+  :ensure t
+  :config
+  (progn
+    (setq treemacs-width                           50))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t t"   . treemacs)
+        ("C-x t C-t" . treemacs-find-file)))
+#+END_SRC
+
+** ace-window
+#+BEGIN_SRC emacs-lisp
+(use-package ace-window
+  :ensure t
+  :bind (("M-o" . ace-window)))
+#+END_SRC
 
 
 * Git
