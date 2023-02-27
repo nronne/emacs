@@ -146,7 +146,7 @@
      (use-package iedit
        :ensure t
        :config
-       (global-set-key (kbd "C-;") 'iedit-mode))
+       (global-set-key (kbd "C-c i") 'iedit-mode))
 
 
      ; if you're windened, narrow to the region, if you're narrowed, widen
@@ -233,6 +233,37 @@
     (setq ivy-count-format "%d/%d ")
     (setq ivy-display-style 'fancy))
 
+  (use-package all-the-icons-ivy-rich
+    :ensure t
+    :init (all-the-icons-ivy-rich-mode 1))
+
+  (use-package ivy-rich
+    :ensure t
+    :init (ivy-rich-mode 1)
+    (setq ivy-rich-path-style 'abbrev)
+    :config
+      ;; override ivy-rich project root finding to use FFIP or to skip completely
+    (defun ivy-rich-switch-buffer-root (candidate)
+      (when-let* ((dir (ivy-rich--switch-buffer-directory candidate)))
+	(unless (or (and (file-remote-p dir)
+		   (not ivy-rich-parse-remote-buffer))
+	      (string-match "https?://" dir))
+    (cond
+     ((require 'find-file-in-project nil t)
+      (let ((default-directory dir))
+	(ffip-project-root)))
+     (t "")
+     ((bound-and-true-p projectile-mode)
+      (let ((project (or (ivy-rich--local-values
+			  candidate 'projectile-project-root)
+			 (projectile-project-root dir))))
+	(unless (string= project "-")
+	  project)))
+     ((require 'project nil t)
+      (when-let ((project (project-current nil dir)))
+	(car (project-roots project))))
+     )))))
+  
 
   (use-package swiper
     :ensure t
@@ -252,46 +283,48 @@
 
 ** ibuffer
    #+BEGIN_SRC emacs-lisp
-	  (global-set-key (kbd "C-x C-b") 'ibuffer)
-	  (setq ibuffer-saved-filter-groups
-		   (quote (("default"
-			    ("dired" (mode . dired-mode))
-			    ("org" (name . "^.*org$"))
-			    ("git" (or 
-				    (mode . magit-blame-mode)
-				    (mode . magit-cherry-mode)
-				    (mode . magit-diff-mode)
-				    (mode . magit-log-mode)
-				    (mode . magit-process-mode)
-				    (mode . magit-status-mode)))
-			    ("web" (or (mode . web-mode) 
-				       (mode . js2-mode)
-				       (mode . css-mode)))
-			    ("shell" (or (mode . eshell-mode)
-					 (mode . shell-mode)))
-			    ("programming" (or
-					    (mode . python-mode)
-					    (mode . c-mode)
-					    (mode . csharp-mode)
-					    (mode . make-mode)))
-			    ("emacs" (or
-				      (name . "^\\*scratch\\*$")
-				      (name . "^\\*Messages\\*$")))
-			    ))))
-	  (add-hook 'ibuffer-mode-hook
-		       (lambda ()
-			 (ibuffer-auto-mode 1)
-			 (ibuffer-switch-to-saved-filter-groups "default")
-			 (ibuffer-projectile-set-filter-groups)))
+     (global-set-key (kbd "C-x C-b") 'ibuffer)
+     (setq ibuffer-saved-filter-groups
+	      (quote (("default"
+		       ("dired" (mode . dired-mode))
+		       ("org" (name . "^.*org$"))
+		       ("git" (or 
+			       (mode . magit-blame-mode)
+			       (mode . magit-cherry-mode)
+			       (mode . magit-diff-mode)
+			       (mode . magit-log-mode)
+			       (mode . magit-process-mode)
+			       (mode . magit-status-mode)))
+		       ("web" (or (mode . web-mode) 
+				  (mode . js2-mode)
+				  (mode . css-mode)))
+		       ("shell" (or (mode . eshell-mode)
+				    (mode . shell-mode)))
+		       ("programming" (or
+				       (mode . python-mode)
+				       (mode . c-mode)
+				       (mode . csharp-mode)
+				       (mode . make-mode)))
+		       ("emacs" (or
+				 (name . "^\\*scratch\\*$")
+				 (name . "^\\*Messages\\*$")))
+		       ))))
+     (add-hook 'ibuffer-mode-hook
+		  (lambda ()
+		    (ibuffer-auto-mode 1)
+		    (ibuffer-switch-to-saved-filter-groups "default")
+		    ;; (ibuffer-projectile-set-filter-groups)
+		    ))
 
-	  ;(add-to-list 'ibuffer-never-show-predicates "zowie")
 
-	  ;; Don't show filter groups if there are no buffers in that group
-	  (setq ibuffer-show-empty-filter-groups nil)
+     ;(add-to-list 'ibuffer-never-show-predicates "zowie")
 
-	  (use-package all-the-icons-ibuffer
-	    :ensure t
-	    :init (all-the-icons-ibuffer-mode 1))
+     ;; Don't show filter groups if there are no buffers in that group
+     (setq ibuffer-show-empty-filter-groups nil)
+
+     (use-package all-the-icons-ibuffer
+       :ensure t
+       :init (all-the-icons-ibuffer-mode 1))
    #+END_SRC
 
 ** projectile
