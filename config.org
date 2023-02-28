@@ -77,7 +77,7 @@
 #+END_SRC
 ** python mode
 #+BEGIN_SRC emacs-lisp
-  ;; (setq python-shell-interpreter "python3")
+  ;; (setq python-shell-interpreter "python")
 #+END_SRC
 
 * Theme
@@ -85,6 +85,9 @@
   (use-package doom-themes
   :ensure t
   :init (load-theme 'doom-moonlight t))
+  ;; (use-package doom-themes
+  ;; :ensure t
+  ;; :init (load-theme 'doom-acario-light t))
 
   (use-package all-the-icons
     :ensure t)
@@ -423,16 +426,17 @@
 
 ** treemacs
 #+BEGIN_SRC emacs-lisp
-(use-package treemacs
-  :ensure t
-  :config
-  (progn
-    (setq treemacs-width                           50))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t t"   . treemacs)
-        ("C-x t C-t" . treemacs-find-file)))
+  (use-package treemacs
+    :ensure t
+    :config
+    (progn
+      (setq treemacs-width                           50))
+    :bind
+    (:map global-map
+	  ("M-0"       . treemacs-select-window)
+	  ("C-x t t"   . treemacs)
+	  ("C-x t C-t" . treemacs-find-file)))
+
 #+END_SRC
 
 ** ace-window
@@ -442,6 +446,29 @@
   :bind (("M-o" . ace-window)))
 #+END_SRC
 
+** dired
+#+BEGIN_SRC emacs-lisp
+  (use-package dired
+    :ensure nil
+    :custom ((dired-listing-switches "-agho")))
+
+  (use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+  (use-package dired-open
+    :ensure t
+    :commands (dired dired-jump)
+    :config
+    (setq dired-open-extensions '(("traj" . "ase gui")
+				  ("xyz" . "ase gui"))))
+
+  (use-package dired-hide-dotfiles
+    :ensure t
+    :hook (dired-mode . dired-hide-dotfiles-mode)
+    :config
+    (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
+#+END_SRC
 
 * Git
   #+BEGIN_SRC emacs-lisp
