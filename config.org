@@ -8,7 +8,7 @@
 ** Remap for MacOS
    #+BEGIN_SRC emacs-lisp
      (setq mac-command-modifier 'meta)
-     (setq mac-option-modifier 'super)
+     (setq mac-right-command-modifier 'super)
    #+END_SRC
 
 ** Interface
@@ -385,8 +385,8 @@
 (use-package vterm-toggle
   :straight (vterm-toggle :type git :host github :repo "jixiuf/vterm-toggle" :branch "master"))
 
-(global-set-key (kbd "s-,") 'vterm-toggle)
-(global-set-key (kbd "s-.") 'vterm-toggle-cd)
+(global-set-key (kbd "C-s-v") 'vterm-toggle)
+(global-set-key (kbd "s-v") 'vterm-toggle-cd)
 #+END_SRC
 ** tramp
 #+BEGIN_SRC emacs-lisp
