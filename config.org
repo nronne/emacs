@@ -186,16 +186,16 @@
 
 ** org mode
 #+BEGIN_SRC emacs-lisp
-    (use-package org-bullets
-      :ensure t
-      :config
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-  ;; Make windmove work in Org mode:
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right)
-  (add-hook 'org-mode-hook (lambda () (flyspell-mode 1) ))
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (add-hook 'org-mode-hook (lambda () (flyspell-mode 1) ))    
+    )
+(eval-after-load 'org
+  (progn
+    (define-key org-mode-map (kbd "C-c C-k") nil)
+    (define-key org-mode-map (kbd "C-c k") nil)))
 #+END_SRC
 
 ** ido
@@ -286,48 +286,49 @@
 
 ** ibuffer
    #+BEGIN_SRC emacs-lisp
-     (global-set-key (kbd "C-x C-b") 'ibuffer)
-     (setq ibuffer-saved-filter-groups
-	      (quote (("default"
-		       ("dired" (mode . dired-mode))
-		       ("org" (name . "^.*org$"))
-		       ("git" (or 
-			       (mode . magit-blame-mode)
-			       (mode . magit-cherry-mode)
-			       (mode . magit-diff-mode)
-			       (mode . magit-log-mode)
-			       (mode . magit-process-mode)
-			       (mode . magit-status-mode)))
-		       ("web" (or (mode . web-mode) 
-				  (mode . js2-mode)
-				  (mode . css-mode)))
-		       ("shell" (or (mode . eshell-mode)
-				    (mode . shell-mode)))
-		       ("programming" (or
-				       (mode . python-mode)
-				       (mode . c-mode)
-				       (mode . csharp-mode)
-				       (mode . make-mode)))
-		       ("emacs" (or
-				 (name . "^\\*scratch\\*$")
-				 (name . "^\\*Messages\\*$")))
-		       ))))
-     (add-hook 'ibuffer-mode-hook
-		  (lambda ()
-		    (ibuffer-auto-mode 1)
-		    (ibuffer-switch-to-saved-filter-groups "default")
-		    ;; (ibuffer-projectile-set-filter-groups)
-		    ))
+		    (global-set-key (kbd "C-x C-b") 'ibuffer)
+		    (setq ibuffer-saved-filter-groups
+			     (quote (("default"
+				      ("dired" (mode . dired-mode))
+				      ("org" (name . "^.*org$"))
+				      ("git" (or 
+					      (mode . magit-blame-mode)
+					      (mode . magit-cherry-mode)
+					      (mode . magit-diff-mode)
+					      (mode . magit-log-mode)
+					      (mode . magit-process-mode)
+					      (mode . magit-status-mode)))
+				      ("web" (or (mode . web-mode) 
+						 (mode . js2-mode)
+						 (mode . css-mode)))
+				      ("shell" (or
+						(mode . eshell-mode)
+						(mode . vterm-mode)
+						(mode . shell-mode)))
+				      ("programming" (or
+						      (mode . python-mode)
+						      (mode . c-mode)
+						      (mode . csharp-mode)
+						      (mode . make-mode)))
+				      ("emacs" (or
+						(name . "^\\*scratch\\*$")
+						(name . "^\\*Messages\\*$")))
+				      ))))
+		    (add-hook 'ibuffer-mode-hook
+				 (lambda ()
+				   (ibuffer-auto-mode 1)
+				   (ibuffer-switch-to-saved-filter-groups "default")
+				   ;; (ibuffer-projectile-set-filter-groups)
+				   ))
 
 
-     ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+		    ;; Don't show filter groups if there are no buffers in that group
+		    (setq ibuffer-show-empty-filter-groups nil)
 
-     ;; Don't show filter groups if there are no buffers in that group
-     (setq ibuffer-show-empty-filter-groups nil)
-
-     (use-package all-the-icons-ibuffer
-       :ensure t
-       :init (all-the-icons-ibuffer-mode 1))
+		    (use-package all-the-icons-ibuffer
+		      :ensure t
+		      :init (all-the-icons-ibuffer-mode 1))
+     
    #+END_SRC
 
 ** projectile
@@ -382,8 +383,8 @@
 (use-package vterm-toggle
   :straight (vterm-toggle :type git :host github :repo "jixiuf/vterm-toggle" :branch "master"))
 
-(global-set-key [C-tab] 'vterm-toggle)
-(global-set-key [C-M-tab] 'vterm-toggle-cd)
+(global-set-key (kbd "C-c C-k") 'vterm-toggle)
+(global-set-key (kbd "C-c k") 'vterm-toggle-cd)
 #+END_SRC
 ** tramp
 #+BEGIN_SRC emacs-lisp
@@ -448,26 +449,32 @@
 
 ** dired
 #+BEGIN_SRC emacs-lisp
-  (use-package dired
-    :ensure nil
-    :custom ((dired-listing-switches "-agho")))
+     (use-package dired
+       :ensure nil
+       :custom ((dired-listing-switches "-Aghot")))
+  
+  (add-hook 'dired-mode-hook
+	    (lambda ()
+	      (define-key dired-mode-map (kbd "e")
+		(lambda () (interactive) (find-alternate-file "..")))))
 
-  (use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
 
-  (use-package dired-open
-    :ensure t
-    :commands (dired dired-jump)
-    :config
-    (setq dired-open-extensions '(("traj" . "ase gui")
-				  ("xyz" . "ase gui"))))
+     (use-package treemacs-icons-dired
+     :hook (dired-mode . treemacs-icons-dired-enable-once)
+     :ensure t)
 
-  (use-package dired-hide-dotfiles
-    :ensure t
-    :hook (dired-mode . dired-hide-dotfiles-mode)
-    :config
-    (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
+     (use-package dired-open
+       :ensure t
+       :commands (dired dired-jump)
+       :config
+       (setq dired-open-extensions '(("traj" . "ase gui")
+				     ("xyz" . "ase gui"))))
+
+     (use-package dired-hide-dotfiles
+       :ensure t
+       :hook (dired-mode . dired-hide-dotfiles-mode)
+       :config
+       (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
 #+END_SRC
 
 * Git
