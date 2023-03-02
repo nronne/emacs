@@ -211,6 +211,7 @@
        :ensure t
        :init
        (global-undo-tree-mode))
+     (setq undo-tree-auto-save-history nil)
    #+END_SRC
 
 ** counsel
@@ -391,7 +392,8 @@
    (customize-set-variable 'tramp-inline-compress-start-size 1000000)
    (setq tramp-default-method "ssh")
    (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-  (setq magit-remote-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
+  ;; (setq magit-remote-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
+  (setq magit-remote-git-executable "git")
    ;; (setq magit-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
 
 #+END_SRC
