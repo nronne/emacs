@@ -102,7 +102,9 @@
       :defer t
       :init
       (doom-modeline-mode 1)
-      (setq doom-modeline-buffer-encoding nil))
+      (setq doom-modeline-buffer-encoding nil
+	    doom-modeline-vcs-max-length 40
+	    doom-modeline-env-load-string ""))
 
     (defun enable-doom-modeline-icons (_frame)
       (setq doom-modeline-icon t))
@@ -390,12 +392,25 @@
 #+END_SRC
 ** tramp
 #+BEGIN_SRC emacs-lisp
-   (customize-set-variable 'tramp-inline-compress-start-size 1000000)
-   (setq tramp-default-method "ssh")
-   (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-  ;; (setq magit-remote-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
-  (setq magit-remote-git-executable "git")
-   ;; (setq magit-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
+     ;; (customize-set-variable 'tramp-inline-compress-start-size 1000000)
+
+     ;; (setq tramp-default-method "ssh")
+     ;; (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+
+    ;; (setq magit-remote-git-executable "git")
+    ;; (setq magit-remote-git-executable "/comm/swstack/tools/git/2.14.2/bin/git")
+
+  (use-package tramp
+    :defer t
+    :config
+    (setq vc-handled-backends '(Git)
+	  file-name-inhibit-locks t
+	  tramp-inline-compress-start-size 1000
+	  tramp-copy-size-limit 10000
+	  tramp-verbose 1
+	  tramp-default-method "ssh"
+	  tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 #+END_SRC
 
@@ -408,22 +423,21 @@
 #+END_SRC   
 ** copilot
 #+BEGIN_SRC emacs-lisp
-    (use-package copilot
-	  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-	  :ensure t
-  )
-      (add-hook 'prog-mode-hook 'copilot-mode)
-    (with-eval-after-load 'company
-      ;; disable inline previews
-      (delq 'company-preview-if-just-one-frontend company-frontends))
+      (use-package copilot
+	    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+	    :ensure t
+    )
+	(add-hook 'prog-mode-hook 'copilot-mode)
+      (with-eval-after-load 'company
+	;; disable inline previews
+	(delq 'company-preview-if-just-one-frontend company-frontends))
 
-    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-  (customize-set-variable 'copilot-node-executable "/opt/homebrew/bin/node")
-(global-set-key (kbd "C-.") 'copilot-next-completion)
-(global-set-key (kbd "C-,") 'copilot-previous-completion)
-(global-set-key (kbd "C-'") 'copilot-complete)
-(global-set-key (kbd "C-;") 'copilot-clear-overlay)
+      (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
+    (customize-set-variable 'copilot-node-executable "/opt/homebrew/bin/node")
+  
+  (global-set-key (kbd "M-.") 'copilot-next-completion)
+  (global-set-key (kbd "M-,") 'copilot-previous-completion)
+  (global-set-key (kbd "C-;") 'copilot-clear-overlay)
 
 
 #+END_SRC   
@@ -455,7 +469,7 @@
      (use-package dired
        :ensure nil
        :custom ((dired-listing-switches "-Aghot")))
-  
+
   (add-hook 'dired-mode-hook
 	    (lambda ()
 	      (define-key dired-mode-map (kbd "e")
@@ -478,7 +492,71 @@
        :hook (dired-mode . dired-hide-dotfiles-mode)
        :config
        (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
+
 #+END_SRC
+** evil-nerd-commenter
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package evil-nerd-commenter
+  ;; :ensure t
+  ;; :bind ("M-;" . evilnc-comment-or-uncomment-lines))
+#+END_SRC
+** rainbow-delimiters
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
+
+** eglot (and related)
+#+BEGIN_SRC emacs-lisp
+     (use-package eglot
+	 :ensure t
+	 :config
+	 (add-to-list 'eglot-server-programs '((python-mode) "/home/roenne/.env/agox-test/bin/pylsp"))
+	 )
+
+     (use-package python-mode
+       :ensure nil 
+       :hook  (python-mode . eglot-ensure))
+
+     (use-package company
+     :after eglot
+     :hook (eglot-managed-mode . company-mode)
+     :bind (("C-<tab>" . company-complete)
+	    :map company-active-map
+	    ("M-n" . nil)
+	    ("M-p" . nil)
+	    ("M-." . company-show-location)
+	    ("<tab>" . company-complete-common-or-cycle)
+	    ("C-s" . company-search-candidates)
+	    ("C-d" . company-show-doc-buffer)
+	    ("C-n" . company-select-next)
+	    ("C-p" . company-select-previous))  
+     :custom
+     (company-selection-wrap-around t)
+     (company-minimum-prefix-length 1)
+     (company-show-numbers t)
+     (company-idle-delay 0.0)
+     (company-tng-configure-default)
+     )
+
+     (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
+     (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
+     (define-key eglot-mode-map (kbd "<f6>") 'xref-find-definitions)
+
+     (custom-set-faces
+    '(flymake-errline ((((class color)) (:underline "red"))))
+    '(flymake-warnline ((((class color)) (:underline "dim grey")))))
+
+    (use-package dap-mode
+      :ensure t)
+#+END_SRC
+
+** tree-sitter
+#+BEGIN_SRC emacs-lisp
+  
+#+END_SRC
+
 
 * Git
   #+BEGIN_SRC emacs-lisp
