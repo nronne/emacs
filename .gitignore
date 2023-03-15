@@ -13,3 +13,12 @@ eshell/*
 ido.last
 projectile-bookmarks.eld
 tramp
+.cache/
+.config.el.~undo-tree~
+.config.org.~undo-tree~
+.ido.last.~undo-tree~
+.init.el.~undo-tree~
+.lsp-session-v1
+eln-cache/
+projects
+straight/
