@@ -86,13 +86,10 @@
   (use-package doom-themes
   :ensure t
   :init (load-theme 'doom-moonlight t))
+  
   ;; (use-package doom-themes
   ;; :ensure t
   ;; :init (load-theme 'doom-acario-light t))
-
-  (use-package all-the-icons
-    :ensure t)
-
 
     (use-package all-the-icons
       :ensure t)
@@ -290,49 +287,48 @@
 
 ** ibuffer
    #+BEGIN_SRC emacs-lisp
-		    (global-set-key (kbd "C-x C-b") 'ibuffer)
-		    (setq ibuffer-saved-filter-groups
-			     (quote (("default"
-				      ("dired" (mode . dired-mode))
-				      ("org" (name . "^.*org$"))
-				      ("git" (or 
-					      (mode . magit-blame-mode)
-					      (mode . magit-cherry-mode)
-					      (mode . magit-diff-mode)
-					      (mode . magit-log-mode)
-					      (mode . magit-process-mode)
-					      (mode . magit-status-mode)))
-				      ("web" (or (mode . web-mode) 
-						 (mode . js2-mode)
-						 (mode . css-mode)))
-				      ("shell" (or
-						(mode . eshell-mode)
-						(mode . vterm-mode)
-						(mode . shell-mode)))
-				      ("programming" (or
-						      (mode . python-mode)
-						      (mode . c-mode)
-						      (mode . csharp-mode)
-						      (mode . make-mode)))
-				      ("emacs" (or
-						(name . "^\\*scratch\\*$")
-						(name . "^\\*Messages\\*$")))
-				      ))))
-		    (add-hook 'ibuffer-mode-hook
-				 (lambda ()
-				   (ibuffer-auto-mode 1)
-				   (ibuffer-switch-to-saved-filter-groups "default")
-				   ;; (ibuffer-projectile-set-filter-groups)
-				   ))
+     (use-package all-the-icons-ibuffer
+       :ensure t
+       :hook (ibuffer-mode . all-the-icons-ibuffer-mode))     
+     (global-set-key (kbd "C-x C-b") 'ibuffer)
+     (setq ibuffer-saved-filter-groups
+	   (quote (("default"
+		    ("dired" (mode . dired-mode))
+		    ("org" (name . "^.*org$"))
+		    ("git" (or 
+			    (mode . magit-blame-mode)
+			    (mode . magit-cherry-mode)
+			    (mode . magit-diff-mode)
+			    (mode . magit-log-mode)
+			    (mode . magit-process-mode)
+			    (mode . magit-status-mode)))
+			    ;; ("web" (or (mode . web-mode) 
+			    ;; 	     (mode . js2-mode)
+			    ;; 	     (mode . css-mode)))
+			    ("shell" (or
+				      (mode . eshell-mode)
+				      (mode . vterm-mode)
+				      (mode . shell-mode)))
+			    ("programming" (or
+					    (mode . python-mode)
+					    (mode . c-mode)
+					    (mode . csharp-mode)
+					    (mode . make-mode)))
+			    ("emacs" (or
+				      (name . "^\\*scratch\\*$")
+				      (name . "^\\*Messages\\*$")))
+			    ))))
+	  (add-hook 'ibuffer-mode-hook
+		       (lambda ()
+			 (ibuffer-auto-mode 1)
+			 (ibuffer-switch-to-saved-filter-groups "default")
+			 ;; (ibuffer-projectile-set-filter-groups)
+			 ))
 
 
-		    ;; Don't show filter groups if there are no buffers in that group
-		    (setq ibuffer-show-empty-filter-groups nil)
+	  ;; Don't show filter groups if there are no buffers in that group
+	  (setq ibuffer-show-empty-filter-groups nil)
 
-		    (use-package all-the-icons-ibuffer
-		      :ensure t
-		      :init (all-the-icons-ibuffer-mode 1))
-     
    #+END_SRC
 
 ** projectile
@@ -444,17 +440,20 @@
 
 ** treemacs
 #+BEGIN_SRC emacs-lisp
-  (use-package treemacs
-    :ensure t
-    :config
-    (progn
-      (setq treemacs-width                           50))
-    :bind
-    (:map global-map
-	  ("M-0"       . treemacs-select-window)
-	  ("C-x t t"   . treemacs)
-	  ("C-x t C-t" . treemacs-find-file)))
+    (use-package treemacs
+      :ensure t
+      :config
+      (progn
+	(setq treemacs-width                           50))
+      :bind
+      (:map global-map
+	    ("M-0"       . treemacs-select-window)
+	    ("C-x t t"   . treemacs)
+	    ("C-x t C-t" . treemacs-find-file)))
 
+    (treemacs-resize-icons 18)
+  (require 'treemacs-all-the-icons)
+  (treemacs-load-theme "all-the-icons")
 #+END_SRC
 
 ** ace-window
