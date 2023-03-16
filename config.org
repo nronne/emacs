@@ -390,7 +390,7 @@
 	:ensure t
 	:config
 	(progn
-	  (setq treemacs-width                           50))
+	  (setq treemacs-width                           40))
 	:bind
 	(:map global-map
 	      ("M-0"       . treemacs-select-window)
