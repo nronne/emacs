@@ -155,16 +155,16 @@
 
 ** org mode
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    (add-hook 'org-mode-hook (lambda () (flyspell-mode 1) ))    
-    )
-(eval-after-load 'org
-  (progn
-    (define-key org-mode-map (kbd "C-c C-k") nil)
-    (define-key org-mode-map (kbd "C-c k") nil)))
+    (use-package org-bullets
+      :ensure t
+      :hook (org-mode . org-bullets-mode)
+      :custom
+      (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+	(eval-after-load 'org
+	  (progn
+	    (define-key org-mode-map (kbd "C-c C-k") nil)
+	    (define-key org-mode-map (kbd "C-c k") nil)))
 #+END_SRC
 
 ** ido
@@ -310,6 +310,7 @@
 #+END_SRC
 
 ** vterm
+
 #+BEGIN_SRC emacs-lisp
   (use-package vterm
       :load-path "/Users/au566369/opt/emacs-libvterm/")
@@ -323,7 +324,9 @@
 	vterm-eval-cmds)
 
 #+END_SRC
+
 ** vterm-toggle
+
 #+BEGIN_SRC emacs-lisp   
 (use-package vterm-toggle
   :straight (vterm-toggle :type git :host github :repo "jixiuf/vterm-toggle" :branch "master"))
@@ -331,6 +334,7 @@
 (global-set-key (kbd "C-s-v") 'vterm-toggle)
 (global-set-key (kbd "s-v") 'vterm-toggle-cd)
 #+END_SRC
+
 ** tramp
 #+BEGIN_SRC emacs-lisp
   (use-package tramp
@@ -527,8 +531,7 @@
 
 #+END_SRC
 
-
-* Git
+** magit
   #+BEGIN_SRC emacs-lisp
     (use-package magit
       :ensure t
@@ -539,6 +542,14 @@
     (setq auto-revert-check-vc-info t)
   #+END_SRC
   
-
-
+** helm
+  #+BEGIN_SRC emacs-lisp
+    (use-package helm
+      :ensure t
+      :bind
+      ("s-g" . helm-imenu)
+      ("s-G" . helm-imenu-in-all-buffers)
+      :config
+      (setq helm-imenu-use-icon t))
+  #+END_SRC
 
