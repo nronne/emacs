@@ -449,52 +449,54 @@
 
 ** eglot (and related)
 #+BEGIN_SRC emacs-lisp
-   (use-package eglot
-       :ensure t
-       :config
-       (add-to-list 'eglot-server-programs '((python-mode) "/home/roenne/.env/ALL/bin/pylsp")))
+       (use-package eglot
+	   :ensure t
+	   :config
+	   (add-to-list 'eglot-server-programs '((python-mode) "/home/roenne/.env/ALL/bin/pylsp")))
 
-   (use-package python-mode
-     :ensure nil 
-     :hook  (python-mode . eglot-ensure))
+       (use-package python-mode
+	 :ensure nil 
+	 :hook  (python-mode . eglot-ensure)
+	 :config
+	 (setq python-indent-offset 4))
 
-   (use-package company
-     :ensure t
-   :after eglot
-   :hook (eglot-managed-mode . company-mode)
-   :bind (("C-<tab>" . company-complete)
-	  :map company-active-map
-	  ("M-n" . nil)
-	  ("M-p" . nil)
-	  ("M-." . company-show-location)
-	  ("<tab>" . company-complete-common-or-cycle)
-	  ("C-s" . company-search-candidates)
-	  ("C-d" . company-show-doc-buffer)
-	  ("C-n" . company-select-next)
-	  ("C-p" . company-select-previous))  
-   :custom
-   (company-selection-wrap-around t)
-   (company-minimum-prefix-length 1)
-   (company-show-numbers t)
-   (company-idle-delay 0.0)
-   (company-tng-configure-default))
+       (use-package company
+	 :ensure t
+       :after eglot
+       :hook (eglot-managed-mode . company-mode)
+       :bind (("C-<tab>" . company-complete)
+	      :map company-active-map
+	      ("M-n" . nil)
+	      ("M-p" . nil)
+	      ("M-." . company-show-location)
+	      ("<tab>" . company-complete-common-or-cycle)
+	      ("C-s" . company-search-candidates)
+	      ("C-d" . company-show-doc-buffer)
+	      ("C-n" . company-select-next)
+	      ("C-p" . company-select-previous))  
+       :custom
+       (company-selection-wrap-around t)
+       (company-minimum-prefix-length 1)
+       (company-show-numbers t)
+       (company-idle-delay 0.0)
+       (company-tng-configure-default))
 
-  (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
-  (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
-  (define-key eglot-mode-map (kbd "C-c f") 'eglot-format-buffer)
-  (define-key eglot-mode-map (kbd "<f9>") 'xref-find-definitions)
-  (define-key eglot-mode-map (kbd "<f8>") 'xref-find-references)
-  (define-key eglot-mode-map (kbd "<f7>") 'xref-go-back)
+      (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
+      (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
+      (define-key eglot-mode-map (kbd "C-c f") 'eglot-format-buffer)
+      (define-key eglot-mode-map (kbd "<f9>") 'xref-find-definitions)
+      (define-key eglot-mode-map (kbd "<f8>") 'xref-find-references)
+      (define-key eglot-mode-map (kbd "<f7>") 'xref-go-back)
 
-   (custom-set-faces
-    '(flymake-errline ((((class color)) (:underline "red"))))
-    '(flymake-warnline ((((class color)) (:underline "dim grey")))))
+       (custom-set-faces
+	'(flymake-errline ((((class color)) (:underline "red"))))
+	'(flymake-warnline ((((class color)) (:underline "dim grey")))))
 
 
-  (use-package markdown-mode
-    :ensure t)
-  ;; (use-package dap-mode
-  ;;   :ensure t)
+      (use-package markdown-mode
+	:ensure t)
+      ;; (use-package dap-mode
+      ;;   :ensure t)
 #+END_SRC
 
 ** tree-sitter
