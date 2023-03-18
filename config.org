@@ -1,133 +1,164 @@
 #+STARTUP: overview
-* General Setup
 
-** Initial screen size
+* User Parameters
+** Ispell Program
+Path to Ispell Program
+#+begin_src emacs-lisp
+  (defvar ispell-program "/opt/homebrew/bin/aspell")
+#+end_src
+
+** Theme
+
+Choose the Doom theme
+
+#+begin_src emacs-lisp
+
+  (defvar theme 'doom-nova)
+
+#+end_src
+
+
+* General Setup
+** Screen-Size
+
+Start emacs with a maximized frame
+
 #+BEGIN_SRC emacs-lisp
   (add-hook 'window-setup-hook 'toggle-frame-maximized t)
-#+END_SRC      
-** Remap for MacOS
-   #+BEGIN_SRC emacs-lisp
-     (setq mac-command-modifier 'meta)
-     (setq mac-right-command-modifier 'super)
-   #+END_SRC
+#+END_SRC
 
-** Interface
+** Remap for MacOS
+
+Use left-command as the meta key and right command as the super key.
+
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-right-command-modifier 'super)
+#+END_SRC
+
+** Basic Visuals
+
+Change some basic defaults to be more clean. 
+
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t) 	
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (save-place-mode 1)
-  (show-paren-mode 1)
+  (electric-pair-mode 1)
   (column-number-mode 1)
-  ;; (global-display-line-numbers-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (setq ring-bell-function 'ignore)
+
+  (global-display-line-numbers-mode)
+  (setq display-line-numbers-type t)
 #+END_SRC
 
-** Buffer
+** Buffer Naming
+
+A bit of basic buffer naming conventions
+
 #+BEGIN_SRC emacs-lisp
+
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-separator "/")
   (setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
   (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
-  (global-set-key (kbd "C-x C-b") 'bs-show) ; Changes buffer-list
+
+#+END_SRC
+
+** Backup Files
+
+No backup files
+
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-files nil) 
+#+END_SRC
+
+** Text Modes
+
+Enable Flyspell in all text-mode buffer as well as auto-fill-mode
+which breaks lines greater than 80 columns.
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq ispell-program-name ispell-program)
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+
+#+END_SRC
+
+** Straight Packages
+
+Use Straight Package Manager
+
+#+BEGIN_SRC emacs-lisp
+
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	(bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+	  (url-retrieve-synchronously
+	   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	   'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  
 #+END_SRC
 
 
-** Backup handling
-#+BEGIN_SRC emacs-lisp
-  (setq backup-by-copying t)
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-	backup-by-copying t    ; Don't delink hardlinks
-	version-control t      ; Use version numbers on backups
-	delete-old-versions t  ; Automatically delete excess backups
-	kept-new-versions 20   ; how many of the newest versions to keep
-	kept-old-versions 5    ; and how many of the old
-    )
-#+END_SRC
+* Theme and Modeline
 
-** autopair
-#+BEGIN_SRC emacs-lisp
-  (electric-pair-mode 1)
-#+END_SRC
-** line numbers
-#+BEGIN_SRC emacs-lisp
-  (global-display-line-numbers-mode)
-  (setq display-line-numbers-type t)
-#+END_SRC
-** spell checker
-#+BEGIN_SRC emacs-lisp
-(setq ispell-program-name "/opt/homebrew/bin/aspell")
-#+END_SRC
-** straight.el
-#+BEGIN_SRC emacs-lisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-#+END_SRC
-** python mode
-#+BEGIN_SRC emacs-lisp
-  ;; (setq python-shell-interpreter "python")
-#+END_SRC
+Using /Doom/ themes and modeline.
+Used the ~doom-modeline-icon~ and a few custom settings.
 
-* Theme
+
 #+BEGIN_SRC emacs-lisp
+  
   (use-package doom-themes
   :ensure t
-  :init (load-theme 'doom-nova t)) 	;doom-moonlight
+  :init (load-theme theme t))
 
-  ;; (use-package doom-themes
-  ;; :ensure t
-  ;; :init (load-theme 'doom-acario-light t))
+  (use-package all-the-icons
+    :ensure t)
 
-    (use-package all-the-icons
-      :ensure t)
-
-    (use-package doom-modeline
-      :ensure t
-      :defer t
-      :init
-      (doom-modeline-mode 1)
-      (setq doom-modeline-buffer-encoding nil
-	    doom-modeline-vcs-max-length 40
-	    doom-modeline-env-load-string ""))
-
-    (defun enable-doom-modeline-icons (_frame)
-      (setq doom-modeline-icon t))
-
-    (add-hook 'after-make-frame-functions 
-	      #'enable-doom-modeline-icons)
-
-#+END_SRC
-
-
-* Installed packages
-** easy-kill
-#+BEGIN_SRC emacs-lisp
-  (use-package easy-kill
+  (use-package doom-modeline
     :ensure t
-    :config
-    (global-set-key [remap kill-ring-save] 'easy-kill))
+    :defer t
+    :init
+    (doom-modeline-mode 1)
+    (setq doom-modeline-buffer-encoding nil
+	  doom-modeline-vcs-max-length 40
+	  doom-modeline-env-load-string ""))
+
+  (defun enable-doom-modeline-icons (_frame)
+    (setq doom-modeline-icon t))
+
+  (add-hook 'after-make-frame-functions 
+	    #'enable-doom-modeline-icons)
+
 #+END_SRC
 
-** try
+
+* Utilities
+** Try
+
+Try packages without installing them permanently.
+
 #+BEGIN_SRC emacs-lisp
   (use-package try
     :ensure t)
 #+END_SRC
 
-** which-key
+** Which Key
+
+Buffer popup which helps with keybindings
+
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :ensure t 
@@ -135,126 +166,26 @@
     (which-key-mode))
 #+END_SRC
 
-** expand-region
-   #+BEGIN_SRC emacs-lisp
-     (use-package expand-region
-       :ensure t
-       :config
-       (global-set-key (kbd "M-SPC") 'er/expand-region))
-   #+END_SRC
 
-** iedit, narrow-or-widen-dwim
-   #+BEGIN_SRC emacs-lisp
-     ; mark and edit all copies of the marked region simultaniously. 
-     (use-package iedit
-       :ensure t
-       :config
-       (global-set-key (kbd "C-c i") 'iedit-mode))
 
-   #+END_SRC
+* File Browsing and Buffer/Window Management
+** Ace Window
 
-** org mode
+Navigation between buffer using ~M-o~.
+
 #+BEGIN_SRC emacs-lisp
-    (use-package org-bullets
-      :ensure t
-      :hook (org-mode . org-bullets-mode)
-      :custom
-      (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-
-	(eval-after-load 'org
-	  (progn
-	    (define-key org-mode-map (kbd "C-c C-k") nil)
-	    (define-key org-mode-map (kbd "C-c k") nil)))
+(use-package ace-window
+  :ensure t
+  :bind (("M-o" . ace-window)))
 #+END_SRC
 
-** ido
-#+BEGIN_SRC emacs-lisp
-  (setq ido-enable-flex-matching t) ; ido package  
-  (setq ido-everywhere t) 
-  (ido-mode 1)
-#+END_SRC
+** iBuffer
 
-** undo-tree
-   #+BEGIN_SRC emacs-lisp
-     (use-package undo-tree
-       :ensure t
-       :init
-       (global-undo-tree-mode))
-     (setq undo-tree-auto-save-history nil)
-   #+END_SRC
+iBuffer sorted into filter-groups.
 
-** counsel
-#+BEGIN_SRC emacs-lisp
-  (use-package counsel
-    :ensure t
-    :bind
-    (("M-y" . counsel-yank-pop)
-     :map ivy-minibuffer-map
-     ("M-y" . ivy-next-line)))
+Invoked with: ~C-x C-b~
 
-#+END_SRC
 
-** swiper/ivy
-#+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :ensure t
-    :diminish (ivy-mode)
-    :bind (("C-x b" . ivy-switch-buffer))
-    :config
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "%d/%d ")
-    (setq ivy-display-style 'fancy))
-
-  (use-package all-the-icons-ivy-rich
-    :ensure t
-    :init (all-the-icons-ivy-rich-mode 1))
-
-  (use-package ivy-rich
-    :ensure t
-    :init (ivy-rich-mode 1)
-    (setq ivy-rich-path-style 'abbrev)
-    :config
-      ;; override ivy-rich project root finding to use FFIP or to skip completely
-    (defun ivy-rich-switch-buffer-root (candidate)
-      (when-let* ((dir (ivy-rich--switch-buffer-directory candidate)))
-	(unless (or (and (file-remote-p dir)
-		   (not ivy-rich-parse-remote-buffer))
-	      (string-match "https?://" dir))
-    (cond
-     ((require 'find-file-in-project nil t)
-      (let ((default-directory dir))
-	(ffip-project-root)))
-     (t "")
-     ((bound-and-true-p projectile-mode)
-      (let ((project (or (ivy-rich--local-values
-			  candidate 'projectile-project-root)
-			 (projectile-project-root dir))))
-	(unless (string= project "-")
-	  project)))
-     ((require 'project nil t)
-      (when-let ((project (project-current nil dir)))
-	(car (project-roots project))))
-     )))))
-  
-
-  (use-package swiper
-    :ensure t
-    :bind (("C-s" . swiper-isearch)
-	   ("C-r" . swiper-isearch)
-	   ("C-c C-r" . ivy-resume)
-	   ("M-x" . counsel-M-x)
-	   ("C-x C-f" . counsel-find-file))
-    :config
-    (progn
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-display-style 'fancy)
-      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-      ))
-#+END_SRC
-
-** ibuffer
    #+BEGIN_SRC emacs-lisp
      (use-package all-the-icons-ibuffer
        :ensure t
@@ -300,118 +231,61 @@
 
    #+END_SRC
 
-** projectile
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package projectile
-  ;;       :ensure t
-  ;;       :bind ("C-c p" . projectile-command-map)
-  ;;       :config
-  ;;       (projectile-global-mode))
-#+END_SRC
+** Ivy
 
-** vterm
 
 #+BEGIN_SRC emacs-lisp
-  (use-package vterm
-      :load-path "/Users/au566369/opt/emacs-libvterm/")
-
-  (push (list "find-file-below"
-	      (lambda (path)
-		(if-let* ((buf (find-file-noselect path))
-			  (window (display-buffer-below-selected buf nil)))
-		    (select-window window)
-		  (message "Failed to open file: %s" path))))
-	vterm-eval-cmds)
-
-#+END_SRC
-
-** vterm-toggle
-
-#+BEGIN_SRC emacs-lisp   
-(use-package vterm-toggle
-  :straight (vterm-toggle :type git :host github :repo "jixiuf/vterm-toggle" :branch "master"))
-
-(global-set-key (kbd "C-s-v") 'vterm-toggle)
-(global-set-key (kbd "s-v") 'vterm-toggle-cd)
-#+END_SRC
-
-** tramp
-#+BEGIN_SRC emacs-lisp
-  (use-package tramp
-    :defer t
-    :config
-    (setq vc-handled-backends '(Git)
-	  file-name-inhibit-locks t
-	  tramp-inline-compress-start-size 1000
-	  tramp-copy-size-limit 10000
-	  tramp-verbose 1
-	  tramp-default-method "ssh"
-	  tramp-use-ssh-controlmaster-options ""
-	  remote-file-name-inhibit-cache nil
-	  tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-
-  ;; (setq tramp-use-ssh-controlmaster-options "")
-  ;; (setq remote-file-name-inhibit-cache nil)
-  ;; (setq enable-remote-dir-locals t)
-#+END_SRC
-
-** pyvenv
-#+BEGIN_SRC emacs-lisp
-  (use-package pyvenv
+  (use-package ivy
     :ensure t
+    :diminish (ivy-mode)
+    :bind (("C-x b" . ivy-switch-buffer))
     :config
-    (pyvenv-mode 1))
-#+END_SRC   
-** copilot
-#+BEGIN_SRC emacs-lisp
-      (use-package copilot
-	    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-	    :ensure t
-    )
-	(add-hook 'prog-mode-hook 'copilot-mode)
-      (with-eval-after-load 'company
-	;; disable inline previews
-	(delq 'company-preview-if-just-one-frontend company-frontends))
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "%d/%d ")
+    (setq ivy-display-style 'fancy))
 
-      (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
-    (customize-set-variable 'copilot-node-executable "/opt/homebrew/bin/node")
+  (use-package all-the-icons-ivy-rich
+    :ensure t
+    :init (all-the-icons-ivy-rich-mode 1))
+
+  (use-package ivy-rich
+    :ensure t
+    :init (ivy-rich-mode 1)
+    (setq ivy-rich-path-style 'abbrev)
+    :config
+      ;; override ivy-rich project root finding to use FFIP or to skip completely
+    (defun ivy-rich-switch-buffer-root (candidate)
+      (when-let* ((dir (ivy-rich--switch-buffer-directory candidate)))
+	(unless (or (and (file-remote-p dir)
+		   (not ivy-rich-parse-remote-buffer))
+	      (string-match "https?://" dir))
+    (cond
+     ((require 'find-file-in-project nil t)
+      (let ((default-directory dir))
+	(ffip-project-root)))
+     (t "")
+     ((bound-and-true-p projectile-mode)
+      (let ((project (or (ivy-rich--local-values
+			  candidate 'projectile-project-root)
+			 (projectile-project-root dir))))
+	(unless (string= project "-")
+	  project)))
+     ((require 'project nil t)
+      (when-let ((project (project-current nil dir)))
+	(car (project-roots project))))
+     )))))
   
-  (global-set-key (kbd "M-.") 'copilot-next-completion)
-  (global-set-key (kbd "M-,") 'copilot-previous-completion)
-  (global-set-key (kbd "C-;") 'copilot-clear-overlay)
 
 
-#+END_SRC   
-
-** treemacs
-#+BEGIN_SRC emacs-lisp
-      (use-package treemacs
-	:ensure t
-	:config
-	(progn
-	  (setq treemacs-width                           40))
-	:bind
-	(:map global-map
-	      ("M-0"       . treemacs-select-window)
-	      ("C-x t t"   . treemacs)
-	      ("C-x t C-t" . treemacs-find-file)))
-
-      (treemacs-resize-icons 20)
-    (use-package treemacs-all-the-icons
-      :ensure t)
-    (treemacs-load-theme "all-the-icons")
 #+END_SRC
 
-** ace-window
-#+BEGIN_SRC emacs-lisp
-(use-package ace-window
-  :ensure t
-  :bind (("M-o" . ace-window)))
-#+END_SRC
+
 
 ** dired
+
 #+BEGIN_SRC emacs-lisp
+  
      (use-package dired
        :ensure nil
        :custom ((dired-listing-switches "-Aghot")))
@@ -440,63 +314,140 @@
        (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
 
 #+END_SRC
+
+** treemacs
+#+BEGIN_SRC emacs-lisp
+      (use-package treemacs
+	:ensure t
+	:config
+	(progn
+	  (setq treemacs-width                           40))
+	:bind
+	(:map global-map
+	      ("M-0"       . treemacs-select-window)
+	      ("C-x t t"   . treemacs)
+	      ("C-x t C-t" . treemacs-find-file)))
+
+      (treemacs-resize-icons 20)
+    (use-package treemacs-all-the-icons
+      :ensure t)
+    (treemacs-load-theme "all-the-icons")
+#+END_SRC
+
+
+* Editing Configuration
+** easy-kill
+#+BEGIN_SRC emacs-lisp
+  (use-package easy-kill
+    :ensure t
+    :config
+    (global-set-key [remap kill-ring-save] 'easy-kill))
+#+END_SRC
+
+** expand-region
+   #+BEGIN_SRC emacs-lisp
+     (use-package expand-region
+       :ensure t
+       :config
+       (global-set-key (kbd "M-SPC") 'er/expand-region))
+   #+END_SRC
+
+
+
+** iedit, narrow-or-widen-dwim
+   #+BEGIN_SRC emacs-lisp
+     ; mark and edit all copies of the marked region simultaniously. 
+     (use-package iedit
+       :ensure t
+       :config
+       (global-set-key (kbd "C-c i") 'iedit-mode))
+
+   #+END_SRC
+
+
+
+** undo-tree
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :ensure t
+       :init
+       (global-undo-tree-mode))
+     (setq undo-tree-auto-save-history nil)
+   #+END_SRC
+
+
+
+
+** Swiper
+#+begin_src emacs-lisp
+  (use-package swiper
+    :ensure t
+    :bind (("C-s" . swiper-isearch)
+           ("C-r" . swiper-isearch)
+           ("C-c C-r" . ivy-resume)
+           ("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file))
+    :config
+    (progn
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-display-style 'fancy)
+      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+      ))  
+#+end_src
+
+** counsel
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line)))
+
+#+END_SRC
+
+
+** ido
+#+BEGIN_SRC emacs-lisp
+  (setq ido-enable-flex-matching t) ; ido package  
+  (setq ido-everywhere t) 
+  (ido-mode 1)
+#+END_SRC
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+* Git
+** Magit
+  #+BEGIN_SRC emacs-lisp
+    (use-package magit
+      :ensure t
+      :init
+      (progn
+	(bind-key "C-x g" 'magit-status)
+	))
+    (setq auto-revert-check-vc-info t)
+  #+END_SRC
+  
+
+* Code
 ** rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
-#+END_SRC
-
-** eglot (and related)
-#+BEGIN_SRC emacs-lisp
-       (use-package eglot
-	   :ensure t
-	   :config
-	   (add-to-list 'eglot-server-programs '((python-mode) "/home/roenne/.env/ALL/bin/pylsp")))
-
-       (use-package python-mode
-	 :ensure nil 
-	 :hook  (python-mode . eglot-ensure)
-	 :config
-	 (setq python-indent-offset 4))
-
-       (use-package company
-	 :ensure t
-       :after eglot
-       :hook (eglot-managed-mode . company-mode)
-       :bind (("C-<tab>" . company-complete)
-	      :map company-active-map
-	      ("M-n" . nil)
-	      ("M-p" . nil)
-	      ("M-." . company-show-location)
-	      ("<tab>" . company-complete-common-or-cycle)
-	      ("C-s" . company-search-candidates)
-	      ("C-d" . company-show-doc-buffer)
-	      ("C-n" . company-select-next)
-	      ("C-p" . company-select-previous))  
-       :custom
-       (company-selection-wrap-around t)
-       (company-minimum-prefix-length 1)
-       (company-show-numbers t)
-       (company-idle-delay 0.0)
-       (company-tng-configure-default))
-
-      (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
-      (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
-      (define-key eglot-mode-map (kbd "C-c f") 'eglot-format-buffer)
-      (define-key eglot-mode-map (kbd "<f9>") 'xref-find-definitions)
-      (define-key eglot-mode-map (kbd "<f8>") 'xref-find-references)
-      (define-key eglot-mode-map (kbd "<f7>") 'xref-go-back)
-
-       (custom-set-faces
-	'(flymake-errline ((((class color)) (:underline "red"))))
-	'(flymake-warnline ((((class color)) (:underline "dim grey")))))
-
-
-      (use-package markdown-mode
-	:ensure t)
-      ;; (use-package dap-mode
-      ;;   :ensure t)
 #+END_SRC
 
 ** tree-sitter
@@ -524,18 +475,73 @@
 
 #+END_SRC
 
-** magit
-  #+BEGIN_SRC emacs-lisp
-    (use-package magit
-      :ensure t
-      :init
-      (progn
-	(bind-key "C-x g" 'magit-status)
-	))
-    (setq auto-revert-check-vc-info t)
-  #+END_SRC
+
+** Python
+
+#+begin_src emacs-lisp
+
+  (use-package python-mode
+    :ensure nil 
+    :hook  (python-mode . eglot-ensure)
+    :config
+    (setq python-indent-offset 4))
   
-** helm
+#+end_src
+
+** PyVenv
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pyvenv
+    :ensure t
+    :config
+    (pyvenv-mode 1))
+#+END_SRC
+
+** Eglot
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package eglot
+    :ensure t
+    :config
+    (add-to-list 'eglot-server-programs '((python-mode) "/home/roenne/.env/ALL/bin/pylsp"))
+    (add-to-list 'eglot-server-programs '((python-mode) "/Users/au566369/.envs/dev/bin/pylsp")))
+
+
+  (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
+  (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
+  (define-key eglot-mode-map (kbd "C-c f") 'eglot-format-buffer)
+  (define-key eglot-mode-map (kbd "<f9>") 'xref-find-definitions)
+  (define-key eglot-mode-map (kbd "<f8>") 'xref-find-references)
+  (define-key eglot-mode-map (kbd "<f7>") 'xref-go-back)
+
+  (custom-set-faces
+   '(flymake-errline ((((class color)) (:underline "red"))))
+   '(flymake-warnline ((((class color)) (:underline "dim grey")))))
+
+  (setq eldoc-echo-area-prefer-doc-buffer t)
+
+#+END_SRC
+
+** corfu
+#+BEGIN_SRC emacs-lisp
+
+  (use-package corfu
+    :ensure t
+    :hook (python-mode . corfu-mode)
+    :init (corfu-popupinfo-mode)
+    :custom
+    (corfu-cycle t)
+    (corfu-auto t)
+    (corfu-auto-prefix 1))
+
+  ;; (corfu-history-mode 1)
+  ;; (savehist-mode 1)
+  ;; (add-to-list 'savehist-additional-variables 'corfu-history)
+  
+#+END_SRC
+
+** Helm
   #+BEGIN_SRC emacs-lisp
     (use-package helm
       :ensure t
@@ -544,5 +550,138 @@
       ("s-G" . helm-imenu-in-all-buffers)
       :config
       (setq helm-imenu-use-icon t))
+    (setq helm-split-window-default-side 'left)
   #+END_SRC
 
+
+** copilot
+#+BEGIN_SRC emacs-lisp
+      (use-package copilot
+	    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+	    :ensure t
+    )
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (with-eval-after-load 'company
+    ;; disable inline previews
+    (delq 'company-preview-if-just-one-frontend company-frontends))
+
+  (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "C-S-<return>") 'copilot-accept-completion-by-word)
+
+  (customize-set-variable 'copilot-node-executable "/opt/homebrew/bin/node")
+
+  (global-set-key (kbd "M-.") 'copilot-next-completion)
+  (global-set-key (kbd "M-,") 'copilot-previous-completion)
+  (global-set-key (kbd "C-;") 'copilot-clear-overlay)
+
+
+#+END_SRC   
+
+
+* Text modes
+** Org Mode
+#+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+          :ensure t
+          :hook (org-mode . org-bullets-mode)
+          :custom
+          (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●"))
+    )
+
+            (eval-after-load 'org
+              (progn
+                (define-key org-mode-map (kbd "C-c C-k") nil)
+                (define-key org-mode-map (kbd "C-c k") nil)))
+
+  (add-hook 'org-mode-hook #'org-indent-mode)
+  (add-hook 'org-mode-hook #'auto-fill-mode)
+  (setq org-hide-emphasis-markers t)
+#+END_SRC
+
+** Markdown Mode
+
+#+begin_src emacs-lisp
+
+  (use-package markdown-mode
+    :ensure t)
+
+#+end_src
+
+
+* Terminal
+** vterm
+
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm
+      :load-path "/Users/au566369/opt/emacs-libvterm/")
+
+  (push (list "find-file-below"
+	      (lambda (path)
+		(if-let* ((buf (find-file-noselect path))
+			  (window (display-buffer-below-selected buf nil)))
+		    (select-window window)
+		  (message "Failed to open file: %s" path))))
+	vterm-eval-cmds)
+
+  (setq vterm-timer-delay 0.01)
+
+  (setq initial-buffer-choice
+	(lambda ()
+	  (treemacs-select-window)
+	  (vterm-toggle-cd)
+	  (delete-other-windows)
+	(get-buffer-create "*vterm*")))
+
+#+END_SRC
+
+
+** vterm-toggle
+
+#+BEGIN_SRC emacs-lisp   
+    (use-package vterm-toggle
+      :straight (vterm-toggle :type git :host github :repo "jixiuf/vterm-toggle" :branch "master"))
+
+    (global-set-key (kbd "C-s-v") 'vterm-toggle)
+    (global-set-key (kbd "s-v") 'vterm-toggle-cd)
+  (add-to-list 'display-buffer-alist
+	       '((lambda (buffer-or-name _)
+		     (let ((buffer (get-buffer buffer-or-name)))
+		       (with-current-buffer buffer
+			 (or (equal major-mode 'vterm-mode)
+			     (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+		  (display-buffer-reuse-window display-buffer-at-bottom)
+		  (reusable-frames . visible)
+		  (window-height . 0.382)))
+
+#+END_SRC
+
+
+
+
+
+* Remote Editing
+** tramp
+#+BEGIN_SRC emacs-lisp
+  (use-package tramp
+    :defer t
+    :config
+    (setq vc-handled-backends '(Git)
+	  file-name-inhibit-locks t
+	  tramp-inline-compress-start-size 1000
+	  tramp-copy-size-limit 10000
+	  tramp-verbose 1
+	  tramp-default-method "ssh"
+	  tramp-use-ssh-controlmaster-options ""
+	  remote-file-name-inhibit-cache nil
+	  tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
+  ;; (setq tramp-use-ssh-controlmaster-options "")
+  ;; (setq remote-file-name-inhibit-cache nil)
+  ;; (setq enable-remote-dir-locals t)
+#+END_SRC
+
+
+
+
+* Installed packages
