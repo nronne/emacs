@@ -558,17 +558,20 @@ Enabled Languages :
 - python
 
 #+BEGIN_SRC emacs-lisp
-  
-  (use-package tree-sitter
-    :straight t
-    :delight)
 
-  (use-package tree-sitter-langs
-    :straight t
-    :after tree-sitter)
+    (use-package tree-sitter
+      :straight t
+      :delight)
 
-  (use-package tree-sitter-hl
-    :hook ((python-mode) . tree-sitter-hl-mode))
+    (use-package tree-sitter-langs
+      :straight t
+      :after tree-sitter)
+
+    ;; (use-package tree-sitter-hl
+    ;;   :hook ((python-mode) . tree-sitter-hl-mode))
+
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 #+END_SRC
 
@@ -623,10 +626,6 @@ Defaults for python-mode.
   
 #+end_src
 
-
-
-** PyVenv
-
 Possibility to source Python virtual environments
 
 #+BEGIN_SRC emacs-lisp
@@ -639,6 +638,15 @@ Possibility to source Python virtual environments
 #+END_SRC
 
 
+** C++
+
+#+begin_src emacs-lisp
+
+  (use-package cc-mode
+    :ensure nil 
+    :hook  (c++-mode . eglot-ensure))
+
+#+end_src
 
 ** Eglot
 
