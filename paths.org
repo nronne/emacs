@@ -1,0 +1,58 @@
+#+STARTUP: overview
+
+* Node executable
+
+Path to node executable
+
+#+begin_src emacs-lisp
+
+  (defvar node-executable "/opt/homebrew/bin/node")
+  
+#+end_src
+
+
+
+* Ispell Executable
+
+Path to Ispell executable
+
+#+begin_src emacs-lisp
+
+  (defvar ispell-executable "/opt/homebrew/bin/aspell")
+  
+#+end_src
+
+
+* Theme
+
+Choose the Doom theme
+
+#+begin_src emacs-lisp
+
+  (defvar theme 'doom-nova)
+
+#+end_src
+
+
+* LSP servers
+
+Add paths to list
+
+#+begin_src emacs-lisp
+
+  (setq LSP-servers '((python-mode "/home/roenne/.env/ALL/bin/pylsp")
+                      (python-mode "pylsp")
+                      (python-mode "/Users/au566369/.envs/dev/bin/pylsp")))
+
+#+end_src
+
+
+* Libvterm package
+
+#+begin_src emacs-lisp
+
+  (defvar libvterm-path "/Users/au566369/opt/emacs-libvterm/")
+
+#+end_src
+
+

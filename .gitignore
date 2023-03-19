@@ -8,7 +8,6 @@ old_config.org
 trash
 config.el
 /transient/
-config.el
 eshell/*
 ido.last
 projectile-bookmarks.eld
@@ -23,3 +22,4 @@ eln-cache/
 projects
 straight/
 #ido.last#
+paths.el

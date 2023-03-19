@@ -1,22 +1,3 @@
-#+STARTUP: overview
-
-* User Parameters
-** Ispell Program
-Path to Ispell Program
-#+begin_src emacs-lisp
-  (defvar ispell-program "/opt/homebrew/bin/aspell")
-#+end_src
-
-** Theme
-
-Choose the Doom theme
-
-#+begin_src emacs-lisp
-
-  (defvar theme 'doom-nova)
-
-#+end_src
-
 
 * General Setup
 ** Screen-Size
@@ -27,6 +8,7 @@ Start emacs with a maximized frame
   (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 #+END_SRC
 
+
 ** Remap for MacOS
 
 Use left-command as the meta key and right command as the super key.
@@ -35,6 +17,7 @@ Use left-command as the meta key and right command as the super key.
   (setq mac-command-modifier 'meta)
   (setq mac-right-command-modifier 'super)
 #+END_SRC
+
 
 ** Basic Visuals
 
@@ -55,6 +38,7 @@ Change some basic defaults to be more clean.
   (setq display-line-numbers-type t)
 #+END_SRC
 
+
 ** Buffer Naming
 
 A bit of basic buffer naming conventions
@@ -69,6 +53,7 @@ A bit of basic buffer naming conventions
 
 #+END_SRC
 
+
 ** Backup Files
 
 No backup files
@@ -77,6 +62,7 @@ No backup files
   (setq make-backup-files nil) 
 #+END_SRC
 
+
 ** Text Modes
 
 Enable Flyspell in all text-mode buffer as well as auto-fill-mode
@@ -84,11 +70,12 @@ which breaks lines greater than 80 columns.
 
 #+BEGIN_SRC emacs-lisp
 
-  (setq ispell-program-name ispell-program)
+  (setq ispell-program-name ispell-executable)
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'text-mode-hook #'auto-fill-mode)
 
 #+END_SRC
+
 
 ** Straight Packages
 
@@ -155,6 +142,7 @@ Try packages without installing them permanently.
     :ensure t)
 #+END_SRC
 
+
 ** Which Key
 
 Buffer popup which helps with keybindings
@@ -169,9 +157,36 @@ Buffer popup which helps with keybindings
 
 
 * File Browsing and Buffer/Window Management
+** Ido
+
+Better buffer management
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t) 
+  (ido-mode 1)
+  
+#+END_SRC
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
 ** Ace Window
 
-Navigation between buffer using ~M-o~.
+Navigation between buffers.
+
+~M-o~ : move to other buffer
 
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window
@@ -179,11 +194,12 @@ Navigation between buffer using ~M-o~.
   :bind (("M-o" . ace-window)))
 #+END_SRC
 
+
 ** iBuffer
 
 iBuffer sorted into filter-groups.
 
-Invoked with: ~C-x C-b~
+~C-x C-b~ : open iBuffer
 
 
    #+BEGIN_SRC emacs-lisp
@@ -231,10 +247,18 @@ Invoked with: ~C-x C-b~
 
    #+END_SRC
 
+
 ** Ivy
 
+A generic completion mechanism for Emacs. Used for buffers, but also
+for editing such as with swiper and counsel.
+Ivy-rich is used for more rich buffer/file information.
+All-the-icons is used as well.
+
+~C-x b~ : Switch Buffer
 
 #+BEGIN_SRC emacs-lisp
+  
   (use-package ivy
     :ensure t
     :diminish (ivy-mode)
@@ -252,62 +276,67 @@ Invoked with: ~C-x C-b~
   (use-package ivy-rich
     :ensure t
     :init (ivy-rich-mode 1)
-    (setq ivy-rich-path-style 'abbrev)
-    :config
-      ;; override ivy-rich project root finding to use FFIP or to skip completely
-    (defun ivy-rich-switch-buffer-root (candidate)
-      (when-let* ((dir (ivy-rich--switch-buffer-directory candidate)))
-	(unless (or (and (file-remote-p dir)
-		   (not ivy-rich-parse-remote-buffer))
-	      (string-match "https?://" dir))
-    (cond
-     ((require 'find-file-in-project nil t)
-      (let ((default-directory dir))
-	(ffip-project-root)))
-     (t "")
-     ((bound-and-true-p projectile-mode)
-      (let ((project (or (ivy-rich--local-values
-			  candidate 'projectile-project-root)
-			 (projectile-project-root dir))))
-	(unless (string= project "-")
-	  project)))
-     ((require 'project nil t)
-      (when-let ((project (project-current nil dir)))
-	(car (project-roots project))))
-     )))))
-  
-
+    (setq ivy-rich-path-style 'abbrev))
 
 #+END_SRC
 
 
 
-** dired
+** Dired
+
+File manager in Emacs. Show files using ~ls -Aghot~.
+
+~C-x d~ : Open dired-buffer in selected directory
+
+~C-x C-j~ : Dired-jump opens dired-buffer in current directory.
+
+dired-mode
+_____________
+
+~a~ : open 
+~e~ : go up directory
+~n~ : next line
+~p~ : previous line
+
+~o~ : open in other buffer
+
+~m~ : mark file
+~u~ : unmark file
+~U~ : Unmark all files
+~C~ : copy file
+~R~ : rename/move
+~D~ : mark for deletion
+~x~ : execute deletion
+
 
 #+BEGIN_SRC emacs-lisp
-  
-     (use-package dired
+
+  (use-package dired
        :ensure nil
-       :custom ((dired-listing-switches "-Aghot")))
+       :custom ((dired-listing-switches "-Aghot"))
+       :config
+       (put 'dired-find-alternate-file 'disabled nil)
+       )
+
 
   (add-hook 'dired-mode-hook
-	    (lambda ()
-	      (define-key dired-mode-map (kbd "e")
-		(lambda () (interactive) (find-alternate-file "..")))))
+            (lambda ()
+              (define-key dired-mode-map (kbd "e")
+                (lambda () (interactive) (find-alternate-file "..")))))
 
 
-     (use-package treemacs-icons-dired
+  (use-package treemacs-icons-dired
      :hook (dired-mode . treemacs-icons-dired-enable-once)
      :ensure t)
 
-     (use-package dired-open
+  (use-package dired-open
        :ensure t
        :commands (dired dired-jump)
        :config
        (setq dired-open-extensions '(("traj" . "ase gui")
-				     ("xyz" . "ase gui"))))
+                                     ("xyz" . "ase gui"))))
 
-     (use-package dired-hide-dotfiles
+  (use-package dired-hide-dotfiles
        :ensure t
        :hook (dired-mode . dired-hide-dotfiles-mode)
        :config
@@ -315,143 +344,232 @@ Invoked with: ~C-x C-b~
 
 #+END_SRC
 
-** treemacs
-#+BEGIN_SRC emacs-lisp
-      (use-package treemacs
-	:ensure t
-	:config
-	(progn
-	  (setq treemacs-width                           40))
-	:bind
-	(:map global-map
-	      ("M-0"       . treemacs-select-window)
-	      ("C-x t t"   . treemacs)
-	      ("C-x t C-t" . treemacs-find-file)))
 
-      (treemacs-resize-icons 20)
-    (use-package treemacs-all-the-icons
-      :ensure t)
-    (treemacs-load-theme "all-the-icons")
+** Treemacs
+
+Sidebar with file navigation.
+All-the-icons is used. 
+
+~M-0~ : Go-To treemacs sidebar.
+
+treemacs-mode
+_____________
+
+~n~ : next line
+~p~ : previous line
+~<tab>~ : Open directory
+~<enter>~ : Go-To file
+
+#+BEGIN_SRC emacs-lisp
+    (use-package treemacs
+      :ensure t
+      :config
+      (progn
+        (setq treemacs-width                           40))
+      :bind
+      (:map global-map
+            ("M-0"       . treemacs-select-window)
+            ("C-x t t"   . treemacs)
+            ("C-x t C-t" . treemacs-find-file)))
+
+    (treemacs-resize-icons 20)
+  (use-package treemacs-all-the-icons
+    :ensure t)
+  (treemacs-load-theme "all-the-icons")
 #+END_SRC
 
 
 * Editing Configuration
-** easy-kill
+** Easy Kill
+
+Easier marking and copying. Marks and copies expandable/collabsable
+region.
+
+~M-w~ : Run easy-kill command.
+
+
+Easy-kill modifiers:
+_____________
+~w~ : word
+~s~ : sext at point
+~l~ : list
+~d~ : function
+~D~ : function name
+~f~ :file
+~b~ : buffer directory
+
+~@~ : append to previous kill
+~+/-~ : expand/shrink region
+~0~ : Initial size
+~SPC~ : Cycle selections
+~C-SPC~ : Turn selection to active region
+
 #+BEGIN_SRC emacs-lisp
+  
   (use-package easy-kill
     :ensure t
     :config
     (global-set-key [remap kill-ring-save] 'easy-kill))
+
 #+END_SRC
 
-** expand-region
+
+** Expand Region
+
+Create a region starting from the smallest sensible region. Can be
+increased incrementally.
+
+~M-SPC~ : Mark region with expand-region. Or expand existing region.
+
    #+BEGIN_SRC emacs-lisp
+
      (use-package expand-region
        :ensure t
        :config
        (global-set-key (kbd "M-SPC") 'er/expand-region))
+     
    #+END_SRC
 
 
 
-** iedit, narrow-or-widen-dwim
+
+** iEdit
+
+Mark and edit all text matching marked region.
+
+~C-c i~ : invoke iedit
+
    #+BEGIN_SRC emacs-lisp
-     ; mark and edit all copies of the marked region simultaniously. 
+
      (use-package iedit
        :ensure t
        :config
        (global-set-key (kbd "C-c i") 'iedit-mode))
-
+     
    #+END_SRC
 
 
 
-** undo-tree
+
+** Undo Tree
+
+Creates a tree-like buffer where one can undo changes.
+
+~C-x u~ : invoke undo-tree
+
    #+BEGIN_SRC emacs-lisp
+
      (use-package undo-tree
        :ensure t
        :init
        (global-undo-tree-mode))
      (setq undo-tree-auto-save-history nil)
+     
    #+END_SRC
 
 
 
 
 ** Swiper
+
+Better iSearch with Swiper. Uses ivy for matching.
+
+~C-s~ : invoke Swiper search
+~C-r~ : invoke Swiper search
+
+~C-c C-r~ : resume Swiper search
+
+
 #+begin_src emacs-lisp
+
   (use-package swiper
     :ensure t
     :bind (("C-s" . swiper-isearch)
            ("C-r" . swiper-isearch)
-           ("C-c C-r" . ivy-resume)
-           ("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file))
+           ("C-c C-r" . ivy-resume))
     :config
     (progn
       (ivy-mode 1)
       (setq ivy-use-virtual-buffers t)
       (setq ivy-display-style 'fancy)
       (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-      ))  
+      ))
+
 #+end_src
 
-** counsel
+
+** Counsel
+
+Better standard function such as yank/pop using ivy completions
+
+~M-y~ : Counsel paste with selection from kill-ring.
+
+~M-x~ : Better M-x with ivy
+
+~C-x C-f~ : Find file with ivy
+
 #+BEGIN_SRC emacs-lisp
+
   (use-package counsel
     :ensure t
     :bind
     (("M-y" . counsel-yank-pop)
+     ("M-x" . counsel-M-x)
+     ("C-x C-f" . counsel-find-file)
      :map ivy-minibuffer-map
      ("M-y" . ivy-next-line)))
 
 #+END_SRC
 
 
-** ido
-#+BEGIN_SRC emacs-lisp
-  (setq ido-enable-flex-matching t) ; ido package  
-  (setq ido-everywhere t) 
-  (ido-mode 1)
-#+END_SRC
-
-
-
-
-
-
-
-
-
-
-
-
-   
 
 
 * Git
-** Magit
+
+Magit package that handles Git.
+
+~C-x g~ Invoke Magit in current directory
+
   #+BEGIN_SRC emacs-lisp
+
     (use-package magit
       :ensure t
       :init
       (progn
-	(bind-key "C-x g" 'magit-status)
-	))
+        (bind-key "C-x g" 'magit-status)
+        ))
     (setq auto-revert-check-vc-info t)
+    
   #+END_SRC
   
 
 * Code
-** rainbow-delimiters
+** Rainbow Delimiters
+
+Change color of delimiters such that it is easier to recognise errors.
+
 #+BEGIN_SRC emacs-lisp
+
   (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
+  
 #+END_SRC
 
-** tree-sitter
+
+
+
+
+** Tree Sitter
+
+Semantic language highlighting using Tree Sitter.
+Languages must be installed.
+
+Enabled Languages :
+- python
+
 #+BEGIN_SRC emacs-lisp
+  
   (use-package tree-sitter
     :straight t
     :delight)
@@ -463,6 +581,25 @@ Invoked with: ~C-x C-b~
   (use-package tree-sitter-hl
     :hook ((python-mode) . tree-sitter-hl-mode))
 
+#+END_SRC
+
+
+
+
+
+** Code Folding
+
+Code folding using ts-fold. Dependent on Tree Sitter for semantics.
+Enabled by default in python buffers.
+
+~s-t~ : Toggle fold
+
+~s-.~ : Open all folds
+
+~s-,~ : Close all folds
+
+#+begin_src emacs-lisp
+
   (use-package ts-fold
     :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
     :ensure t
@@ -472,11 +609,20 @@ Invoked with: ~C-x C-b~
   (global-set-key (kbd "s-.") 'ts-fold-open-all)
   (global-set-key (kbd "s-,") 'ts-fold-close-all)
 
+  
+#+end_src
 
-#+END_SRC
+
+
 
 
 ** Python
+
+Defaults for python-mode.
+
+- Enables Eglot in python buffers
+- Using 4 spaces for indentation.
+
 
 #+begin_src emacs-lisp
 
@@ -488,24 +634,51 @@ Invoked with: ~C-x C-b~
   
 #+end_src
 
+
+
 ** PyVenv
 
+Possibility to source Python virtual environments
+
 #+BEGIN_SRC emacs-lisp
+
   (use-package pyvenv
     :ensure t
     :config
     (pyvenv-mode 1))
+  
 #+END_SRC
 
+
+
 ** Eglot
+
+Language Server Protocol (LSP) client in Emacs.
+Language servers are added manually or (at least sometimes) it works
+with PyVenv. Flymake is used for errors and warnings and Eldoc for
+documentation.
+
+
+~C-c r~ : Eglot rename variable
+
+~C-c h~ : Open Eldoc documentation buffer
+
+~C-c f~ : Format Buffer
+
+~<f9>~ : Go to definition
+
+~<f8>~ : Find references. Opens in other buffer.
+
+~<f7>~ : Go back
+
 
 #+BEGIN_SRC emacs-lisp
 
   (use-package eglot
     :ensure t
     :config
-    (add-to-list 'eglot-server-programs '((python-mode) "/home/roenne/.env/ALL/bin/pylsp"))
-    (add-to-list 'eglot-server-programs '((python-mode) "/Users/au566369/.envs/dev/bin/pylsp")))
+    (seq-doseq (p LSP-servers)
+      (add-to-list 'eglot-server-programs p)))
 
 
   (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
@@ -523,12 +696,25 @@ Invoked with: ~C-x C-b~
 
 #+END_SRC
 
-** corfu
+
+
+
+** Corfu
+
+Completions and suggestions for Eglot.
+
+~<tab>~ : Completes highlighted suggestion
+
+~C-n~ : next suggestion
+
+~C-p~ : previous suggestion
+
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package corfu
     :ensure t
-    :hook (python-mode . corfu-mode)
+    :hook (eglot--managed-mode . corfu-mode)
     :init (corfu-popupinfo-mode)
     :custom
     (corfu-cycle t)
@@ -541,8 +727,19 @@ Invoked with: ~C-x C-b~
   
 #+END_SRC
 
+
+
+
 ** Helm
+
+Helm is only used for iMenu.
+
+~s-g~ : iMenu for buffer
+
+~s-G~ : iMenu for all buffers
+
   #+BEGIN_SRC emacs-lisp
+
     (use-package helm
       :ensure t
       :bind
@@ -550,37 +747,63 @@ Invoked with: ~C-x C-b~
       ("s-G" . helm-imenu-in-all-buffers)
       :config
       (setq helm-imenu-use-icon t))
+
     (setq helm-split-window-default-side 'left)
+
   #+END_SRC
 
 
-** copilot
+
+** Github Copilot
+
+Github copilot for code suggestions. Enabled for all programming
+modes.
+
+Requirements:
+- Node
+
+~C-<return>~ : accept completion
+
+~C-S-<return>~ : accept completion by word
+
+~M-.~ : Next completion suggestion
+
+~M-,~ : Previous completion suggestion
+
+~C-;~ : Clear suggestions
+
+
 #+BEGIN_SRC emacs-lisp
-      (use-package copilot
-	    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-	    :ensure t
-    )
+  
+  (use-package copilot
+    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+    :ensure t)
+
   (add-hook 'prog-mode-hook 'copilot-mode)
-  (with-eval-after-load 'company
-    ;; disable inline previews
-    (delq 'company-preview-if-just-one-frontend company-frontends))
 
-  (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "C-S-<return>") 'copilot-accept-completion-by-word)
+  ;; (with-eval-after-load 'company
+  ;;   ;; disable inline previews
+  ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
 
-  (customize-set-variable 'copilot-node-executable "/opt/homebrew/bin/node")
+  (customize-set-variable 'copilot-node-executable node-executable)
 
-  (global-set-key (kbd "M-.") 'copilot-next-completion)
-  (global-set-key (kbd "M-,") 'copilot-previous-completion)
-  (global-set-key (kbd "C-;") 'copilot-clear-overlay)
-
+  (define-key prog-mode-map (kbd "C-<return>") 'copilot-accept-completion)
+  (define-key prog-mode-map (kbd "C-S-<return>") 'copilot-accept-completion-by-word)
+  (define-key prog-mode-map (kbd "M-.") 'copilot-next-completion)
+  (define-key prog-mode-map (kbd "M-,") 'copilot-previous-completion)
+  (define-key prog-mode-map (kbd "C-;") 'copilot-clear-overlay)
 
 #+END_SRC   
 
 
 * Text modes
 ** Org Mode
+
+Org mode using org bullets.
+Auto-indent and auto-fill mode
+
 #+BEGIN_SRC emacs-lisp
+
     (use-package org-bullets
           :ensure t
           :hook (org-mode . org-bullets-mode)
@@ -588,17 +811,21 @@ Invoked with: ~C-x C-b~
           (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●"))
     )
 
-            (eval-after-load 'org
-              (progn
-                (define-key org-mode-map (kbd "C-c C-k") nil)
-                (define-key org-mode-map (kbd "C-c k") nil)))
+  (eval-after-load 'org
+    (progn
+      (define-key org-mode-map (kbd "C-c C-k") nil)
+      (define-key org-mode-map (kbd "C-c k") nil)))
 
   (add-hook 'org-mode-hook #'org-indent-mode)
   (add-hook 'org-mode-hook #'auto-fill-mode)
   (setq org-hide-emphasis-markers t)
+  
 #+END_SRC
 
+
 ** Markdown Mode
+
+Markdown mode primarily for used with Eglot documentation.
 
 #+begin_src emacs-lisp
 
@@ -609,49 +836,65 @@ Invoked with: ~C-x C-b~
 
 
 * Terminal
-** vterm
+** Vterm
+
+Terminal with vterm.
+
+Initial buffer is created as vterm buffer with Treemacs sidebar.
+
+Requirements:
+- emacs-libvterm
 
 #+BEGIN_SRC emacs-lisp
   (use-package vterm
-      :load-path "/Users/au566369/opt/emacs-libvterm/")
+      :load-path libvterm-path)
 
   (push (list "find-file-below"
-	      (lambda (path)
-		(if-let* ((buf (find-file-noselect path))
-			  (window (display-buffer-below-selected buf nil)))
-		    (select-window window)
-		  (message "Failed to open file: %s" path))))
-	vterm-eval-cmds)
+              (lambda (path)
+                (if-let* ((buf (find-file-noselect path))
+                          (window (display-buffer-below-selected buf nil)))
+                    (select-window window)
+                  (message "Failed to open file: %s" path))))
+        vterm-eval-cmds)
 
   (setq vterm-timer-delay 0.01)
 
   (setq initial-buffer-choice
-	(lambda ()
-	  (treemacs-select-window)
-	  (vterm-toggle-cd)
-	  (delete-other-windows)
-	(get-buffer-create "*vterm*")))
+        (lambda ()
+          (treemacs-select-window)
+          (vterm-toggle-cd)
+          (delete-other-windows)
+        (get-buffer-create "*vterm*")))
 
 #+END_SRC
 
 
-** vterm-toggle
+** Vterm Toggle
 
-#+BEGIN_SRC emacs-lisp   
+Be able to toggle a vterm terminal.
+Set to always sit at the bottom of the frame.
+
+~s-v~ : Toggle terminal and CD to working directory
+
+~C-s-v~ : Toggle terminal
+
+#+BEGIN_SRC emacs-lisp
+  
     (use-package vterm-toggle
       :straight (vterm-toggle :type git :host github :repo "jixiuf/vterm-toggle" :branch "master"))
 
-    (global-set-key (kbd "C-s-v") 'vterm-toggle)
-    (global-set-key (kbd "s-v") 'vterm-toggle-cd)
+  (global-set-key (kbd "C-s-v") 'vterm-toggle)
+  (global-set-key (kbd "s-v") 'vterm-toggle-cd)
+
   (add-to-list 'display-buffer-alist
-	       '((lambda (buffer-or-name _)
-		     (let ((buffer (get-buffer buffer-or-name)))
-		       (with-current-buffer buffer
-			 (or (equal major-mode 'vterm-mode)
-			     (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
-		  (display-buffer-reuse-window display-buffer-at-bottom)
-		  (reusable-frames . visible)
-		  (window-height . 0.382)))
+               '((lambda (buffer-or-name _)
+                     (let ((buffer (get-buffer buffer-or-name)))
+                       (with-current-buffer buffer
+                         (or (equal major-mode 'vterm-mode)
+                             (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                  (display-buffer-reuse-window display-buffer-at-bottom)
+                  (reusable-frames . visible)
+                  (window-height . 0.382)))
 
 #+END_SRC
 
@@ -660,28 +903,33 @@ Invoked with: ~C-x C-b~
 
 
 * Remote Editing
-** tramp
+** Tramp
+
+Configure tramp to make it as efficient as possible.
+Only GIT is handled as a VC system.
+
 #+BEGIN_SRC emacs-lisp
+
   (use-package tramp
     :defer t
     :config
     (setq vc-handled-backends '(Git)
-	  file-name-inhibit-locks t
-	  tramp-inline-compress-start-size 1000
-	  tramp-copy-size-limit 10000
-	  tramp-verbose 1
-	  tramp-default-method "ssh"
-	  tramp-use-ssh-controlmaster-options ""
-	  remote-file-name-inhibit-cache nil
-	  tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+          file-name-inhibit-locks t
+          tramp-inline-compress-start-size 1000
+          tramp-copy-size-limit 10000
+          tramp-verbose 1
+          tramp-default-method "ssh"
+          tramp-use-ssh-controlmaster-options ""
+          remote-file-name-inhibit-cache nil
+          tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
   ;; (setq tramp-use-ssh-controlmaster-options "")
   ;; (setq remote-file-name-inhibit-cache nil)
   ;; (setq enable-remote-dir-locals t)
+  
 #+END_SRC
 
 
 
 
-* Installed packages
