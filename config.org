@@ -1,3 +1,4 @@
+#+STARTUP: overview
 
 * General Setup
 ** Screen-Size
@@ -169,18 +170,6 @@ Better buffer management
   
 #+END_SRC
 
-
-
-
-
-
-
-
-
-
-
-
-   
 
 ** Ace Window
 
@@ -794,6 +783,7 @@ Requirements:
   (define-key prog-mode-map (kbd "C-;") 'copilot-clear-overlay)
 
 #+END_SRC   
+
 
 
 * Text modes
