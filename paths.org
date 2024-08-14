@@ -29,7 +29,8 @@ Choose the Doom theme
 
 #+begin_src emacs-lisp
 
-  (defvar theme 'doom-nova)
+  ;; (defvar theme 'doom-palenight)
+  (defvar theme 'doom-bluloco-light)
 
 #+end_src
 
@@ -40,9 +41,8 @@ Add paths to list
 
 #+begin_src emacs-lisp
 
-  (setq LSP-servers '((python-mode "/home/roenne/.env/ALL/bin/pylsp")
-                      (python-mode "pylsp")
-                      (python-mode "/Users/au566369/.envs/dev/bin/pylsp")))
+  ;; (setq LSP-servers '(((python-mode) "/home/roenne/.env/ALL/bin/pylsp")))
+  (setq LSP-servers '(((python-mode) "/Users/au566369/.envs/dev/bin/pylsp")))
 
 #+end_src
 

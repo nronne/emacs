@@ -300,37 +300,39 @@ _____________
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package dired
-       :ensure nil
-       :custom ((dired-listing-switches "-Aghot"))
-       :config
-       (put 'dired-find-alternate-file 'disabled nil)
-       )
+    (use-package dired
+         :ensure nil
+         :custom ((dired-listing-switches "-Aghot"))
+         :config
+         (put 'dired-find-alternate-file 'disabled nil)
+         )
 
 
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              (define-key dired-mode-map (kbd "e")
-                (lambda () (interactive) (find-alternate-file "..")))))
+    (add-hook 'dired-mode-hook
+              (lambda ()
+                (define-key dired-mode-map (kbd "e")
+                  (lambda () (interactive) (find-alternate-file "..")))))
 
 
-  (use-package treemacs-icons-dired
-     :hook (dired-mode . treemacs-icons-dired-enable-once)
-     :ensure t)
+    (use-package treemacs-icons-dired
+       :hook (dired-mode . treemacs-icons-dired-enable-once)
+       :ensure t)
 
-  (use-package dired-open
-       :ensure t
-       :commands (dired dired-jump)
-       :config
-       (setq dired-open-extensions '(("traj" . "ase gui")
-                                     ("xyz" . "ase gui"))))
+    (use-package dired-open
+         :ensure t
+         :commands (dired dired-jump)
+         :config
+         (setq dired-open-extensions '(("traj" . "ase gui")
+                                       ("xyz" . "ase gui"))))
 
-  (use-package dired-hide-dotfiles
-       :ensure t
-       :hook (dired-mode . dired-hide-dotfiles-mode)
-       :config
-       (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
+    (use-package dired-hide-dotfiles
+         :ensure t
+         :hook (dired-mode . dired-hide-dotfiles-mode)
+         :config
+         (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
 
+
+  (setq dired-dwim-target t)
 #+END_SRC
 
 
@@ -577,8 +579,6 @@ Enabled Languages :
 
 
 
-
-
 ** Code Folding
 
 Code folding using ts-fold. Dependent on Tree Sitter for semantics.
@@ -605,6 +605,30 @@ Enabled by default in python buffers.
 #+end_src
 
 
+
+
+
+** Symbol Overlay
+
+Symbol highlighting and possibility for jumping between symbols
+Enabled by default in python buffers.
+
+~M-n~ : Next symbol
+
+~M-p~ : Previous symbol
+
+
+#+begin_src emacs-lisp
+
+  (use-package symbol-overlay
+    :ensure t
+    :bind (
+           ("M-n" . symbol-overlay-jump-next)
+           ("M-p" . symbol-overlay-jump-prev)
+           )
+    :hook (python-mode . symbol-overlay-mode))
+
+#+end_src
 
 
 
@@ -648,6 +672,7 @@ Possibility to source Python virtual environments
 
 #+end_src
 
+
 ** Eglot
 
 Language Server Protocol (LSP) client in Emacs.
@@ -675,7 +700,13 @@ documentation.
     :ensure t
     :config
     (seq-doseq (p LSP-servers)
-      (add-to-list 'eglot-server-programs p)))
+      (add-to-list 'eglot-server-programs p))
+    )
+
+  ;; (add-to-list 'eglot-server-programs `((python-mode) .
+  ;;                                    ,(eglot-alternatives '("pylsp"
+  ;;                                                          "/home/roenne/.env/ALL/bin/pylsp"
+  ;;                                                          "/Users/au566369/.envs/dev/bin/pylsp"))))
 
 
   (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
@@ -908,24 +939,44 @@ Only GIT is handled as a VC system.
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package tramp
-    :defer t
-    :config
-    (setq vc-handled-backends '(Git)
-          file-name-inhibit-locks t
-          tramp-inline-compress-start-size 1000
-          tramp-copy-size-limit 10000
-          tramp-verbose 1
-          tramp-default-method "ssh"
-          tramp-use-ssh-controlmaster-options ""
-          remote-file-name-inhibit-cache nil
-          tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+        (use-package tramp
+          :defer t
+          :config
+          (setq vc-handled-backends '(Git)
+                file-name-inhibit-locks t
+                tramp-inline-compress-start-size 1000
+                tramp-copy-size-limit 10000
+                tramp-verbose 1
+                tramp-default-method "ssh"
+                tramp-use-ssh-controlmaster-options nil
+                remote-file-name-inhibit-cache nil
+                tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
+                )
+          (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
-  ;; (setq tramp-use-ssh-controlmaster-options "")
-  ;; (setq remote-file-name-inhibit-cache nil)
-  ;; (setq enable-remote-dir-locals t)
-  
+      (defvar disable-tramp-backups '(all))
+
+        ;; (setq tramp-use-ssh-controlmaster-options "")
+        ;; (setq remote-file-name-inhibit-cache nil)
+        ;; (setq enable-remote-dir-locals t)
+
+
+    (defun my-vc-off-if-remote ()
+      (if (file-remote-p (buffer-file-name))
+          (setq-local vc-handled-backends nil)))
+    (add-hook 'find-file-hook 'my-vc-off-if-remote)
+
+
+  ;; (after! tramp
+  ;;   (setq tramp-inline-compress-start-size 1000)
+  ;;   (setq tramp-copy-size-limit 10000)
+  ;;   ;; (setq vc-handled-backends '(Git))
+  ;;   (setq tramp-verbose 1)
+  ;;   (setq tramp-default-method "rcp") ;; scp
+  ;;   (setq tramp-use-ssh-controlmaster-options nil)
+  ;;   (setq tramp-verbose 6))
+
+
 #+END_SRC
 
 
