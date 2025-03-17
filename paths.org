@@ -30,7 +30,7 @@ Choose the Doom theme
 #+begin_src emacs-lisp
 
   ;; (defvar theme 'doom-palenight)
-  (defvar theme 'doom-bluloco-light)
+  (defvar theme 'doom-bluloco-dark)
 
 #+end_src
 
